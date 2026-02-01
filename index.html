@@ -1,0 +1,885 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2575.7">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; -webkit-text-stroke: #000000}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; -webkit-text-stroke: #000000; min-height: 14.0px}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px 'PingFang TC'; -webkit-text-stroke: #000000}
+    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; -webkit-text-stroke: #000000}
+    span.s1 {font-kerning: none}
+    span.s2 {font: 12.0px 'PingFang TC'; font-kerning: none}
+    span.s3 {font: 12.0px Helvetica; font-kerning: none}
+    span.s4 {font: 12.0px Times; font-kerning: none}
+  </style>
+</head>
+<body>
+<p class="p1"><span class="s1">&lt;!doctype html&gt;</span></p>
+<p class="p1"><span class="s1">&lt;html lang="zh-Hant"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;head&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;meta charset="utf-8" /&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;meta name="viewport" content="width=device-width,initial-scale=1" /&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;title&gt;</span><span class="s2">指導者請假勾選</span><span class="s1">&lt;/title&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;style&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>body { font-family: -apple-system, BlinkMacSystemFont, "Noto Sans TC", "Segoe UI", Arial, sans-serif; margin: 0; background: #f6f7fb; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.wrap { max-width: 720px; margin: 0 auto; padding: 16px; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.card { background: #fff; border-radius: 14px; padding: 16px; box-shadow: 0 6px 18px rgba(0,0,0,.06); margin-bottom: 12px; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>label { display: block; font-weight: 700; margin: 0 0 8px; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>select, input[type="date"], input[type="text"] { width: 100%; font-size: 18px; padding: 12px; border-radius: 10px; border: 1px solid #dcdfe6; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.hint { color: #666; font-size: 14px; margin-top: 6px; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.list { display: grid; gap: 10px; margin-top: 10px; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.item { display: flex; gap: 12px; align-items: flex-start; border: 1px solid #e7e9ef; padding: 12px; border-radius: 12px; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.item input { width: 24px; height: 24px; margin-top: 2px; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.meta { font-size: 15px; line-height: 1.35; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.meta .title { font-weight: 800; font-size: 16px; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.pill { display: inline-block; padding: 2px 8px; border-radius: 999px; background: #eef3ff; color: #2457ff; font-size: 12px; margin-right: 6px; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>button { width: 100%; font-size: 18px; font-weight: 800; padding: 14px 12px; border-radius: 12px; border: 0; background: #2457ff; color: #fff; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>button:disabled { opacity: .5; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.status { font-size: 14px; margin-top: 10px; color: #333; white-space: pre-wrap; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/style&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/head&gt;</span></p>
+<p class="p1"><span class="s1">&lt;body&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div class="wrap"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="card"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;label&gt;https://script.google.com/macros/s/AKfycbyJADHe_DZdNIbfv_KPewAcBekEond-5Fw63i-RWCd1mHl_O9uGAQ-LTnzENZshjnhe/exec&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;input id="webapp" type="text" placeholder="https://script.google.com/macros/s/AKfycbyJADHe_DZdNIbfv_KPewAcBekEond-5Fw63i-RWCd1mHl_O9uGAQ-LTnzENZshjnhe/exec" /&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="hint"&gt;</span><span class="s2">這是你在</span><span class="s1"> Apps Script </span><span class="s2">部署後拿到的網址。</span><span class="s1">&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="card"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;label&gt;</span><span class="s2">選指導者</span><span class="s1">&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;select id="instructor"&gt;&lt;/select&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="hint"&gt;</span><span class="s2">名單會從</span><span class="s1"> CSV </span><span class="s2">的「指導者」欄自動生成。</span><span class="s1">&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="card"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;label&gt;</span><span class="s2">選日期</span><span class="s1">&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;input id="date" type="date" /&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="hint"&gt;</span><span class="s2">選完日期後會列出該日該指導者的課堂。</span><span class="s1">&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="card"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;label&gt;</span><span class="s2">勾選要請假的課堂（整堂）</span><span class="s1">&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div id="classList" class="list"&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="hint"&gt;CSV </span><span class="s2">只有開始時間，所以只顯示開始時間。</span><span class="s1">&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="card"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button id="submit" disabled&gt;</span><span class="s2">送出（寫入</span><span class="s1"> Google Sheet</span><span class="s2">）</span><span class="s1">&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div id="status" class="status"&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">&lt;script&gt;</span></p>
+<p class="p3"><span class="s3"><span class="Apple-converted-space">  </span>// </span><span class="s1">你每月匯出的</span><span class="s3"> CSV </span><span class="s1">貼在這裡（要包含標題列：課程</span><span class="s3">,</span><span class="s1">日期</span><span class="s3">,</span><span class="s1">時間</span><span class="s3">,</span><span class="s1">指導者）</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const CSV_TEXT = `</span><span class="s4">課程,日期,時間,指導者</span></p>
+<p class="p4"><span class="s1">B－空環 Lv.1~2,2026/3/2,10:30,巧巧 Hsu</span></p>
+<p class="p4"><span class="s1">C－空環 Lv.2~3,2026/3/2,10:30,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.2~3,2026/3/2,12:00,巧巧 Hsu</span></p>
+<p class="p4"><span class="s1">A－空瑜 Lv.0,2026/3/2,12:30,妙妙 簡</span></p>
+<p class="p4"><span class="s1">C－空環 Lv.1~2,2026/3/2,12:30,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1~2,2026/3/2,13:30,Lily 黃</span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.2,2026/3/2,14:30,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.3~5,2026/3/2,14:45,Lily 黃</span></p>
+<p class="p4"><span class="s1">C－空環 Lv.2~3,2026/3/2,18:00,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－舞綢 Lv.1~2,2026/3/2,18:15,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.1~3,2026/3/2,18:30,蜜莉 戴</span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1~2,2026/3/2,18:40,@N.a🧘🏻♀️<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.1~2,2026/3/2,19:15,XUAN<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－開髖專班,2026/3/2,19:45,Jina<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空瑜 Lv.0,2026/3/2,20:00,嗨底 Heidi <span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.2,2026/3/2,20:00,@N.a🧘🏻♀️<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－柔軟度開發,2026/3/2,20:30,XUAN<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空瑜 Lv.0,2026/3/2,21:30,Chin<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空瑜 Lv.1,2026/3/2,21:30,@N.a🧘🏻♀️<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.0~1,2026/3/3,10:30,壹壹<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－肩頸舒壓瑜伽,2026/3/3,12:00,Jina<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.2,2026/3/3,12:30,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1,2026/3/3,13:10,@N.a🧘🏻♀️<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.1~2,2026/3/3,14:00,壹壹<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.2~4,2026/3/3,14:00,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空瑜 Lv.1~2,2026/3/3,14:30,珍珍<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.1~2,2026/3/3,15:30,Vivi<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1~2,2026/3/3,15:45,珍珍<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1,2026/3/3,18:00,Vivi<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.2~4,2026/3/3,18:30,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空瑜 Lv.0~2,2026/3/3,18:30,珍珍<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.1~2,2026/3/3,18:30,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空瑜 Lv.0~2,2026/3/3,19:15,Ariel Lu</span></p>
+<p class="p4"><span class="s1">A－柔軟度開發,2026/3/3,20:00,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.2~4,2026/3/3,20:00,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1,2026/3/3,20:30,Ariel Lu</span></p>
+<p class="p4"><span class="s1">D－空瑜 Lv.1~2,2026/3/3,21:00,姝姝<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.1~2,2026/3/3,21:30,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空瑜 Lv.1~2,2026/3/3,21:30,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.2,2026/3/4,10:00,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.1~2,2026/3/4,10:30,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.1~2,2026/3/4,11:00,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.1,2026/3/4,11:30,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1~2,2026/3/4,12:30,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.2~3,2026/3/4,12:45,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空瑜 Lv.0~1,2026/3/4,13:30,壹壹<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－後彎基本,2026/3/4,14:30,Jina<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.2~3,2026/3/4,18:30,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空瑜 Lv.2~4,2026/3/4,18:30,珍珍<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.1~2,2026/3/4,19:00,Liz 🌰<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空環 Lv.1,2026/3/4,19:10,嗨底 Heidi <span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1~2,2026/3/4,20:00,珍珍<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.1~2,2026/3/4,20:00,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空瑜 Lv.0~2,2026/3/4,20:15,嗨底 Heidi <span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.1,2026/3/4,20:30,Carrie🐟<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空瑜 Lv.0,2026/3/4,21:30,Chin<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空瑜 Lv.1~2,2026/3/4,21:30,珍珍<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.3,2026/3/5,10:00,XUAN<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.1~2,2026/3/5,10:30,Vicky Lee</span></p>
+<p class="p4"><span class="s1">D－空瑜 Lv.0~2,2026/3/5,11:00,珍珍<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－原始瑜伽,2026/3/5,11:00,Jina<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－柔軟度開發,2026/3/5,11:15,XUAN<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.2~3,2026/3/5,12:30,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.1~2,2026/3/5,13:00,小mo(子涵）<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.2~4,2026/3/5,13:30,Sue<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1~2,2026/3/5,15:00,小mo(子涵）<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.1~2,2026/3/5,15:30,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1,2026/3/5,17:00,Vivi<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.2~3,2026/3/5,17:30,Sue<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－現代小品,2026/3/5,17:45,芮錤<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空瑜 Lv.2~4,2026/3/5,18:30,珍珍<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.1~2,2026/3/5,18:30,Vicky Lee</span></p>
+<p class="p4"><span class="s1">A－舞綢 Open level,2026/3/5,18:45,Sue<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.1,2026/3/5,19:45,珍珍<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－香氛瑜伽,2026/3/5,20:00,妙妙 簡</span></p>
+<p class="p4"><span class="s1">B－空環 Lv.0,2026/3/5,20:00,Vicky Lee</span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.3~4,2026/3/5,20:00,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空瑜 Lv.0,2026/3/5,21:15,妙妙 簡</span></p>
+<p class="p4"><span class="s1">A－空瑜 Lv.1~2,2026/3/5,21:30,Chin<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.0,2026/3/6,11:00,芮錤<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.2,2026/3/6,11:00,@N.a🧘🏻♀️<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空瑜 Lv.0,2026/3/6,11:00,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.1,2026/3/6,12:30,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1,2026/3/6,12:30,小mo(子涵）<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.3~4,2026/3/6,12:30,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－舞綢 Open level,2026/3/6,14:00,Sue<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.1~2,2026/3/6,14:15,小mo(子涵）<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－現代小品,2026/3/6,14:30,芮錤<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1,2026/3/6,17:10,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.2~4,2026/3/6,17:15,Josty Lin</span></p>
+<p class="p4"><span class="s1">C－空環 Lv.1~2,2026/3/6,18:30,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.1~2,2026/3/6,18:30,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.2,2026/3/6,18:30,Vivi<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－鞦韆 Lv1~2,2026/3/6,19:45,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空環 Lv.1,2026/3/6,20:00,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.0~1,2026/3/6,20:00,芮錤<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.2~3,2026/3/6,20:00,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.1,2026/3/6,21:15,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.2,2026/3/6,21:30,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空瑜 Lv.1~2,2026/3/7,10:45,Ariel Lu</span></p>
+<p class="p4"><span class="s1">D－空瑜 Lv.1,2026/3/7,11:00,珍珍<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－原始瑜伽,2026/3/7,11:00,Jina<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空瑜 Lv.2~4,2026/3/7,12:00,Ariel Lu</span></p>
+<p class="p4"><span class="s1">A－空瑜 Lv.0~2,2026/3/7,12:30,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.2,2026/3/7,12:30,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.2,2026/3/7,13:30,Liz 🌰<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.2~3,2026/3/7,14:00,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.2~4,2026/3/7,14:00,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－舞綢 Lv.1,2026/3/7,14:30,萱<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.1,2026/3/7,15:00,Liz 🌰<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.2,2026/3/7,15:30,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.3~5,2026/3/7,15:30,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空瑜 Lv.0,2026/3/7,15:45,萱<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.0,2026/3/7,16:30,Liz 🌰<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.1~2,2026/3/7,17:00,萱<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空環 Lv.1~2,2026/3/7,17:00,寧寧<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－全方位流動瑜珈,2026/3/7,17:00,卡拉 卡拉</span></p>
+<p class="p4"><span class="s1">C－空瑜 Lv.2~4,2026/3/7,18:30,萱<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空環 Lv.0,2026/3/7,18:30,寧寧<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.1~2,2026/3/7,18:45,Lily 黃</span></p>
+<p class="p4"><span class="s1">B－肩頸舒壓瑜伽,2026/3/7,19:00,Jina<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－場地租借,2026/3/7,19:45,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.2~3,2026/3/7,20:00,Vicky Lee</span></p>
+<p class="p4"><span class="s1">C－場地租借,2026/3/7,20:45,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.1~2,2026/3/8,10:00,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.2,2026/3/8,10:00,@N.a🧘🏻♀️<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－場地租借,2026/3/8,11:00,嗨底 Heidi <span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.0~1,2026/3/8,11:30,小mo(子涵）<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空瑜 Lv.3~4,2026/3/8,11:30,Chloe Lee</span></p>
+<p class="p4"><span class="s1">C－空環 Lv.1~2,2026/3/8,12:00,蜜莉 戴</span></p>
+<p class="p4"><span class="s1">D－場地租借,2026/3/8,12:15,嗨底 Heidi <span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空瑜 Lv.1~2,2026/3/8,12:45,Chloe Lee</span></p>
+<p class="p4"><span class="s1">B－綢吊 Lv.0-2（90分）,2026/3/8,13:15,妙妙 簡</span></p>
+<p class="p4"><span class="s1">D－空環 Lv.0~1,2026/3/8,13:30,小mo(子涵）<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.2~3,2026/3/8,13:30,蜜莉 戴</span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.3~5,2026/3/8,14:30,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.1~2,2026/3/8,15:00,小mo(子涵）<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.2,2026/3/8,15:00,Vivi<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.1~2,2026/3/8,16:00,Liz 🌰<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1,2026/3/8,16:15,@N.a🧘🏻♀️<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空瑜 Lv.1~2,2026/3/8,17:00,小mo(子涵）<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.0~2,2026/3/8,17:30,芮錤<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.2~3,2026/3/8,17:30,Liz 🌰<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.2,2026/3/8,18:15,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1~2,2026/3/8,19:00,小mo(子涵）<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－現代小品,2026/3/8,19:30,芮錤<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.2~3,2026/3/8,19:30,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空環 Lv.1~2,2026/3/8,19:45,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.1~2,2026/3/9,10:30,巧巧 Hsu</span></p>
+<p class="p4"><span class="s1">C－空環 Lv.2~3,2026/3/9,10:30,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.2~3,2026/3/9,12:00,巧巧 Hsu</span></p>
+<p class="p4"><span class="s1">A－空瑜 Lv.0,2026/3/9,12:30,妙妙 簡</span></p>
+<p class="p4"><span class="s1">C－空環 Lv.1~2,2026/3/9,12:30,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1~2,2026/3/9,13:30,Lily 黃</span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.2,2026/3/9,14:30,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.3~5,2026/3/9,14:45,Lily 黃</span></p>
+<p class="p4"><span class="s1">C－空環 Lv.2~3,2026/3/9,18:00,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－舞綢 Lv.1~2,2026/3/9,18:15,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.1~3,2026/3/9,18:30,蜜莉 戴</span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1~2,2026/3/9,18:40,@N.a🧘🏻♀️<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.1~2,2026/3/9,19:15,XUAN<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－開髖專班,2026/3/9,19:45,Jina<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空瑜 Lv.0,2026/3/9,20:00,嗨底 Heidi <span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.2,2026/3/9,20:00,@N.a🧘🏻♀️<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－柔軟度開發,2026/3/9,20:30,XUAN<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空瑜 Lv.0,2026/3/9,21:30,Chin<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空瑜 Lv.1,2026/3/9,21:30,@N.a🧘🏻♀️<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.0~1,2026/3/10,10:30,壹壹<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－肩頸舒壓瑜伽,2026/3/10,12:00,Jina<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.2,2026/3/10,12:30,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1,2026/3/10,13:10,@N.a🧘🏻♀️<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.1~2,2026/3/10,14:00,壹壹<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.2~4,2026/3/10,14:00,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空瑜 Lv.1~2,2026/3/10,14:30,珍珍<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.1~2,2026/3/10,15:30,Vivi<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1~2,2026/3/10,15:45,珍珍<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1,2026/3/10,18:00,Vivi<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.2~4,2026/3/10,18:30,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空瑜 Lv.0~2,2026/3/10,18:30,珍珍<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.1~2,2026/3/10,18:30,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空瑜 Lv.0~2,2026/3/10,19:15,Ariel Lu</span></p>
+<p class="p4"><span class="s1">A－柔軟度開發,2026/3/10,20:00,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.2~4,2026/3/10,20:00,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1,2026/3/10,20:30,Ariel Lu</span></p>
+<p class="p4"><span class="s1">D－空瑜 Lv.1~2,2026/3/10,21:00,姝姝<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.1~2,2026/3/10,21:30,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空瑜 Lv.1~2,2026/3/10,21:30,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.2,2026/3/11,10:00,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.1~2,2026/3/11,10:30,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.1~2,2026/3/11,11:00,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.1,2026/3/11,11:30,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1~2,2026/3/11,12:30,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.2~3,2026/3/11,12:45,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空瑜 Lv.0~1,2026/3/11,13:30,壹壹<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－後彎基本,2026/3/11,14:30,Jina<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.2~3,2026/3/11,18:30,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空瑜 Lv.2~4,2026/3/11,18:30,珍珍<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.1~2,2026/3/11,19:00,Liz 🌰<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空環 Lv.1,2026/3/11,19:10,嗨底 Heidi <span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1~2,2026/3/11,20:00,珍珍<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.1~2,2026/3/11,20:00,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空瑜 Lv.0~2,2026/3/11,20:15,嗨底 Heidi <span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.1,2026/3/11,20:30,Carrie🐟<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空瑜 Lv.0,2026/3/11,21:30,Chin<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空瑜 Lv.1~2,2026/3/11,21:30,珍珍<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.3,2026/3/12,10:00,XUAN<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.1~2,2026/3/12,10:30,Vicky Lee</span></p>
+<p class="p4"><span class="s1">D－空瑜 Lv.0~2,2026/3/12,11:00,珍珍<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－原始瑜伽,2026/3/12,11:00,Jina<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－柔軟度開發,2026/3/12,11:15,XUAN<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.2~3,2026/3/12,12:30,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.1~2,2026/3/12,13:00,小mo(子涵）<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.2~4,2026/3/12,13:30,Sue<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1~2,2026/3/12,15:00,小mo(子涵）<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.1~2,2026/3/12,15:30,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1,2026/3/12,17:00,Vivi<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.2~3,2026/3/12,17:30,Sue<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－現代小品,2026/3/12,17:45,芮錤<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空瑜 Lv.2~4,2026/3/12,18:30,珍珍<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.1~2,2026/3/12,18:30,Vicky Lee</span></p>
+<p class="p4"><span class="s1">A－舞綢 Open level,2026/3/12,18:45,Sue<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.1,2026/3/12,19:45,珍珍<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－香氛瑜伽,2026/3/12,20:00,妙妙 簡</span></p>
+<p class="p4"><span class="s1">B－空環 Lv.0,2026/3/12,20:00,Vicky Lee</span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.3~4,2026/3/12,20:00,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空瑜 Lv.0,2026/3/12,21:15,妙妙 簡</span></p>
+<p class="p4"><span class="s1">A－空瑜 Lv.1~2,2026/3/12,21:30,Chin<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.0,2026/3/13,11:00,芮錤<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.2,2026/3/13,11:00,@N.a🧘🏻♀️<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空瑜 Lv.0,2026/3/13,11:00,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.1,2026/3/13,12:30,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1,2026/3/13,12:30,小mo(子涵）<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.3~4,2026/3/13,12:30,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－舞綢 Open level,2026/3/13,14:00,Sue<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.1~2,2026/3/13,14:15,小mo(子涵）<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－現代小品,2026/3/13,14:30,芮錤<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1,2026/3/13,17:10,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.2~4,2026/3/13,17:15,Josty Lin</span></p>
+<p class="p4"><span class="s1">C－空環 Lv.1~2,2026/3/13,18:30,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.1~2,2026/3/13,18:30,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.2,2026/3/13,18:30,Vivi<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－鞦韆 Lv1~2,2026/3/13,19:45,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空環 Lv.1,2026/3/13,20:00,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.0~1,2026/3/13,20:00,芮錤<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.2~3,2026/3/13,20:00,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.1,2026/3/13,21:15,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.2,2026/3/13,21:30,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空瑜 Lv.1~2,2026/3/14,10:45,Ariel Lu</span></p>
+<p class="p4"><span class="s1">D－空瑜 Lv.1,2026/3/14,11:00,珍珍<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－原始瑜伽,2026/3/14,11:00,Jina<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空瑜 Lv.2~4,2026/3/14,12:00,Ariel Lu</span></p>
+<p class="p4"><span class="s1">A－空瑜 Lv.0~2,2026/3/14,12:30,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.2,2026/3/14,12:30,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.2,2026/3/14,13:30,Liz 🌰<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.2~3,2026/3/14,14:00,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.2~4,2026/3/14,14:00,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－舞綢 Lv.1,2026/3/14,14:30,萱<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.1,2026/3/14,15:00,Liz 🌰<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.2,2026/3/14,15:30,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.3~5,2026/3/14,15:30,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空瑜 Lv.0,2026/3/14,15:45,萱<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.0,2026/3/14,16:30,Liz 🌰<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.1~2,2026/3/14,17:00,萱<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空環 Lv.1~2,2026/3/14,17:00,寧寧<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－全方位流動瑜珈,2026/3/14,17:00,卡拉 卡拉</span></p>
+<p class="p4"><span class="s1">C－空瑜 Lv.2~4,2026/3/14,18:30,萱<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空環 Lv.0,2026/3/14,18:30,寧寧<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.1~2,2026/3/14,18:45,Lily 黃</span></p>
+<p class="p4"><span class="s1">B－開髖專班,2026/3/14,19:00,Jina<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.2~3,2026/3/14,20:00,Vicky Lee</span></p>
+<p class="p4"><span class="s1">B－空環 Lv.1~2,2026/3/15,10:00,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.2,2026/3/15,10:00,@N.a🧘🏻♀️<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.0~1,2026/3/15,11:30,小mo(子涵）<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空瑜 Lv.3~4,2026/3/15,11:30,Chloe Lee</span></p>
+<p class="p4"><span class="s1">C－空環 Lv.1~2,2026/3/15,12:00,蜜莉 戴</span></p>
+<p class="p4"><span class="s1">A－空瑜 Lv.1~2,2026/3/15,12:45,Chloe Lee</span></p>
+<p class="p4"><span class="s1">B－綢吊 Lv.0-2（90分）,2026/3/15,13:15,妙妙 簡</span></p>
+<p class="p4"><span class="s1">D－空環 Lv.0~1,2026/3/15,13:30,小mo(子涵）<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.2~3,2026/3/15,13:30,蜜莉 戴</span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.3~5,2026/3/15,14:30,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.1~2,2026/3/15,15:00,小mo(子涵）<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.2,2026/3/15,15:00,Vivi<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.1~2,2026/3/15,16:00,Liz 🌰<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1,2026/3/15,16:15,@N.a🧘🏻♀️<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－場地租借,2026/3/15,16:30,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空瑜 Lv.1~2,2026/3/15,17:00,小mo(子涵）<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.0~2,2026/3/15,17:30,芮錤<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.2~3,2026/3/15,17:30,Liz 🌰<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.2,2026/3/15,18:15,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1~2,2026/3/15,19:00,小mo(子涵）<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－現代小品,2026/3/15,19:30,芮錤<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.2~3,2026/3/15,19:30,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空環 Lv.1~2,2026/3/15,19:45,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.1~2,2026/3/16,10:30,巧巧 Hsu</span></p>
+<p class="p4"><span class="s1">C－空環 Lv.2~3,2026/3/16,10:30,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.2~3,2026/3/16,12:00,巧巧 Hsu</span></p>
+<p class="p4"><span class="s1">A－空瑜 Lv.0,2026/3/16,12:30,妙妙 簡</span></p>
+<p class="p4"><span class="s1">C－空環 Lv.1~2,2026/3/16,12:30,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1~2,2026/3/16,13:30,Lily 黃</span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.2,2026/3/16,14:30,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.3~5,2026/3/16,14:45,Lily 黃</span></p>
+<p class="p4"><span class="s1">C－空環 Lv.2~3,2026/3/16,18:00,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－舞綢 Lv.1~2,2026/3/16,18:15,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.1~3,2026/3/16,18:30,蜜莉 戴</span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1~2,2026/3/16,18:40,@N.a🧘🏻♀️<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.1~2,2026/3/16,19:15,XUAN<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－開髖專班,2026/3/16,19:45,Jina<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空瑜 Lv.0,2026/3/16,20:00,嗨底 Heidi <span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.2,2026/3/16,20:00,@N.a🧘🏻♀️<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－柔軟度開發,2026/3/16,20:30,XUAN<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空瑜 Lv.0,2026/3/16,21:30,Chin<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空瑜 Lv.1,2026/3/16,21:30,@N.a🧘🏻♀️<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.0~1,2026/3/17,10:30,壹壹<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－肩頸舒壓瑜伽,2026/3/17,12:00,Jina<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.2,2026/3/17,12:30,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1,2026/3/17,13:10,@N.a🧘🏻♀️<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.1~2,2026/3/17,14:00,壹壹<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.2~4,2026/3/17,14:00,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空瑜 Lv.1~2,2026/3/17,14:30,珍珍<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.1~2,2026/3/17,15:30,Vivi<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1~2,2026/3/17,15:45,珍珍<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1,2026/3/17,18:00,Vivi<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.2~4,2026/3/17,18:30,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空瑜 Lv.0~2,2026/3/17,18:30,珍珍<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.1~2,2026/3/17,18:30,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空瑜 Lv.0~2,2026/3/17,19:15,Ariel Lu</span></p>
+<p class="p4"><span class="s1">A－柔軟度開發,2026/3/17,20:00,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.2~4,2026/3/17,20:00,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1,2026/3/17,20:30,Ariel Lu</span></p>
+<p class="p4"><span class="s1">D－空瑜 Lv.1~2,2026/3/17,21:00,姝姝<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.1~2,2026/3/17,21:30,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空瑜 Lv.1~2,2026/3/17,21:30,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.2,2026/3/18,10:00,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.1~2,2026/3/18,10:30,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.1~2,2026/3/18,11:00,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.1,2026/3/18,11:30,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1~2,2026/3/18,12:30,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.2~3,2026/3/18,12:45,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空瑜 Lv.0~1,2026/3/18,13:30,壹壹<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－後彎基本,2026/3/18,14:30,Jina<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.2~3,2026/3/18,18:30,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空瑜 Lv.2~4,2026/3/18,18:30,珍珍<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.1~2,2026/3/18,19:00,Liz 🌰<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空環 Lv.1,2026/3/18,19:10,嗨底 Heidi <span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1~2,2026/3/18,20:00,珍珍<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.1~2,2026/3/18,20:00,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空瑜 Lv.0~2,2026/3/18,20:15,嗨底 Heidi <span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.1,2026/3/18,20:30,Carrie🐟<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空瑜 Lv.0,2026/3/18,21:30,Chin<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空瑜 Lv.1~2,2026/3/18,21:30,珍珍<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.3,2026/3/19,10:00,XUAN<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.1~2,2026/3/19,10:30,Vicky Lee</span></p>
+<p class="p4"><span class="s1">D－空瑜 Lv.0~2,2026/3/19,11:00,珍珍<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－原始瑜伽,2026/3/19,11:00,Jina<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－柔軟度開發,2026/3/19,11:15,XUAN<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.2~3,2026/3/19,12:30,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.1~2,2026/3/19,13:00,小mo(子涵）<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.2~4,2026/3/19,13:30,Sue<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1~2,2026/3/19,15:00,小mo(子涵）<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.1~2,2026/3/19,15:30,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1,2026/3/19,17:00,Vivi<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.2~3,2026/3/19,17:30,Sue<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－現代小品,2026/3/19,17:45,芮錤<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空瑜 Lv.2~4,2026/3/19,18:30,珍珍<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.1~2,2026/3/19,18:30,Vicky Lee</span></p>
+<p class="p4"><span class="s1">A－舞綢 Open level,2026/3/19,18:45,Sue<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.1,2026/3/19,19:45,珍珍<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－香氛瑜伽,2026/3/19,20:00,妙妙 簡</span></p>
+<p class="p4"><span class="s1">B－空環 Lv.0,2026/3/19,20:00,Vicky Lee</span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.3~4,2026/3/19,20:00,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空瑜 Lv.0,2026/3/19,21:15,妙妙 簡</span></p>
+<p class="p4"><span class="s1">A－空瑜 Lv.1~2,2026/3/19,21:30,Chin<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.0,2026/3/20,11:00,芮錤<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.2,2026/3/20,11:00,@N.a🧘🏻♀️<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空瑜 Lv.0,2026/3/20,11:00,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.1,2026/3/20,12:30,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1,2026/3/20,12:30,小mo(子涵）<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.3~4,2026/3/20,12:30,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－舞綢 Open level,2026/3/20,14:00,Sue<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.1~2,2026/3/20,14:15,小mo(子涵）<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－現代小品,2026/3/20,14:30,芮錤<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1,2026/3/20,17:10,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.2~4,2026/3/20,17:15,Josty Lin</span></p>
+<p class="p4"><span class="s1">C－空環 Lv.1~2,2026/3/20,18:30,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.1~2,2026/3/20,18:30,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.2,2026/3/20,18:30,Vivi<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－鞦韆 Lv1~2,2026/3/20,19:45,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空環 Lv.1,2026/3/20,20:00,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.0~1,2026/3/20,20:00,芮錤<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.2~3,2026/3/20,20:00,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.1,2026/3/20,21:15,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.2,2026/3/20,21:30,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空瑜 Lv.1~2,2026/3/21,10:45,Ariel Lu</span></p>
+<p class="p4"><span class="s1">D－空瑜 Lv.1,2026/3/21,11:00,珍珍<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－原始瑜伽,2026/3/21,11:00,Jina<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空瑜 Lv.2~4,2026/3/21,12:00,Ariel Lu</span></p>
+<p class="p4"><span class="s1">A－空瑜 Lv.0~2,2026/3/21,12:30,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－Ting老師初階舞綢舞碼特別課(90min),2026/3/21,12:30,共用帳號<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.2,2026/3/21,13:30,Liz 🌰<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.2~4,2026/3/21,14:00,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－舞綢 Lv.1,2026/3/21,14:30,萱<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－Ting老師進階舞綢舞碼特別課(90min),2026/3/21,14:30,共用帳號<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.1,2026/3/21,15:00,Liz 🌰<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.2,2026/3/21,15:30,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空瑜 Lv.0,2026/3/21,15:45,萱<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.0,2026/3/21,16:30,Liz 🌰<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.1~2,2026/3/21,17:00,萱<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空環 Lv.1~2,2026/3/21,17:00,寧寧<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－全方位流動瑜珈,2026/3/21,17:00,卡拉 卡拉</span></p>
+<p class="p4"><span class="s1">C－空瑜 Lv.2~4,2026/3/21,18:30,萱<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空環 Lv.0,2026/3/21,18:30,寧寧<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.1~2,2026/3/21,18:45,Lily 黃</span></p>
+<p class="p4"><span class="s1">B－肩頸舒壓瑜伽,2026/3/21,19:00,Jina<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.2~3,2026/3/21,20:00,Vicky Lee</span></p>
+<p class="p4"><span class="s1">B－空環 Lv.1~2,2026/3/22,10:00,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.2,2026/3/22,10:00,@N.a🧘🏻♀️<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.0~1,2026/3/22,11:30,小mo(子涵）<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空瑜 Lv.3~4,2026/3/22,11:30,Chloe Lee</span></p>
+<p class="p4"><span class="s1">C－空環 Lv.1~2,2026/3/22,12:00,蜜莉 戴</span></p>
+<p class="p4"><span class="s1">A－空瑜 Lv.1~2,2026/3/22,12:45,Chloe Lee</span></p>
+<p class="p4"><span class="s1">B－綢吊 Lv.0-2（90分）,2026/3/22,13:15,妙妙 簡</span></p>
+<p class="p4"><span class="s1">D－空環 Lv.0~1,2026/3/22,13:30,小mo(子涵）<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.2~3,2026/3/22,13:30,蜜莉 戴</span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.3~5,2026/3/22,14:30,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.1~2,2026/3/22,15:00,小mo(子涵）<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.2,2026/3/22,15:00,Vivi<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.1~2,2026/3/22,16:00,Liz 🌰<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1,2026/3/22,16:15,@N.a🧘🏻♀️<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空瑜 Lv.1~2,2026/3/22,17:00,小mo(子涵）<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.0~2,2026/3/22,17:30,芮錤<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.2~3,2026/3/22,17:30,Liz 🌰<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.2,2026/3/22,18:15,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1~2,2026/3/22,19:00,小mo(子涵）<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－現代小品,2026/3/22,19:30,芮錤<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.2~3,2026/3/22,19:30,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空環 Lv.1~2,2026/3/22,19:45,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.1~2,2026/3/23,10:30,巧巧 Hsu</span></p>
+<p class="p4"><span class="s1">C－空環 Lv.2~3,2026/3/23,10:30,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.2~3,2026/3/23,12:00,巧巧 Hsu</span></p>
+<p class="p4"><span class="s1">A－空瑜 Lv.0,2026/3/23,12:30,妙妙 簡</span></p>
+<p class="p4"><span class="s1">C－空環 Lv.1~2,2026/3/23,12:30,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1~2,2026/3/23,13:30,Lily 黃</span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.2,2026/3/23,14:30,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.3~5,2026/3/23,14:45,Lily 黃</span></p>
+<p class="p4"><span class="s1">C－空環 Lv.2~3,2026/3/23,18:00,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－舞綢 Lv.1~2,2026/3/23,18:15,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.1~3,2026/3/23,18:30,蜜莉 戴</span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1~2,2026/3/23,18:40,@N.a🧘🏻♀️<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.1~2,2026/3/23,19:15,XUAN<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－開髖專班,2026/3/23,19:45,Jina<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空瑜 Lv.0,2026/3/23,20:00,嗨底 Heidi <span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.2,2026/3/23,20:00,@N.a🧘🏻♀️<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－柔軟度開發,2026/3/23,20:30,XUAN<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空瑜 Lv.0,2026/3/23,21:30,Chin<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空瑜 Lv.1,2026/3/23,21:30,@N.a🧘🏻♀️<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.0~1,2026/3/24,10:30,壹壹<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－肩頸舒壓瑜伽,2026/3/24,12:00,Jina<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.2,2026/3/24,12:30,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1,2026/3/24,13:10,@N.a🧘🏻♀️<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.1~2,2026/3/24,14:00,壹壹<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.2~4,2026/3/24,14:00,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空瑜 Lv.1~2,2026/3/24,14:30,珍珍<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.1~2,2026/3/24,15:30,Vivi<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1~2,2026/3/24,15:45,珍珍<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1,2026/3/24,18:00,Vivi<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.2~4,2026/3/24,18:30,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空瑜 Lv.0~2,2026/3/24,18:30,珍珍<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.1~2,2026/3/24,18:30,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空瑜 Lv.0~2,2026/3/24,19:15,Ariel Lu</span></p>
+<p class="p4"><span class="s1">A－柔軟度開發,2026/3/24,20:00,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.2~4,2026/3/24,20:00,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1,2026/3/24,20:30,Ariel Lu</span></p>
+<p class="p4"><span class="s1">D－空瑜 Lv.1~2,2026/3/24,21:00,姝姝<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.1~2,2026/3/24,21:30,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空瑜 Lv.1~2,2026/3/24,21:30,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.2,2026/3/25,10:00,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.1~2,2026/3/25,10:30,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.1~2,2026/3/25,11:00,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.1,2026/3/25,11:30,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1~2,2026/3/25,12:30,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.2~3,2026/3/25,12:45,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空瑜 Lv.0~1,2026/3/25,13:30,壹壹<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－後彎基本,2026/3/25,14:30,Jina<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.2~3,2026/3/25,18:30,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空瑜 Lv.2~4,2026/3/25,18:30,珍珍<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.1~2,2026/3/25,19:00,Liz 🌰<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空環 Lv.1,2026/3/25,19:10,嗨底 Heidi <span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1~2,2026/3/25,20:00,珍珍<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.1~2,2026/3/25,20:00,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空瑜 Lv.0~2,2026/3/25,20:15,嗨底 Heidi <span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.1,2026/3/25,20:30,Carrie🐟<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空瑜 Lv.0,2026/3/25,21:30,Chin<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空瑜 Lv.1~2,2026/3/25,21:30,珍珍<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.3,2026/3/26,10:00,XUAN<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.1~2,2026/3/26,10:30,Vicky Lee</span></p>
+<p class="p4"><span class="s1">D－空瑜 Lv.0~2,2026/3/26,11:00,珍珍<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－原始瑜伽,2026/3/26,11:00,Jina<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－柔軟度開發,2026/3/26,11:15,XUAN<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.2~3,2026/3/26,12:30,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.1~2,2026/3/26,13:00,小mo(子涵）<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.2~4,2026/3/26,13:30,Sue<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1~2,2026/3/26,15:00,小mo(子涵）<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.1~2,2026/3/26,15:30,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1,2026/3/26,17:00,Vivi<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.2~3,2026/3/26,17:30,Sue<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－現代小品,2026/3/26,17:45,芮錤<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空瑜 Lv.2~4,2026/3/26,18:30,珍珍<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.1~2,2026/3/26,18:30,Vicky Lee</span></p>
+<p class="p4"><span class="s1">A－舞綢 Open level,2026/3/26,18:45,Sue<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.1,2026/3/26,19:45,珍珍<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－香氛瑜伽,2026/3/26,20:00,妙妙 簡</span></p>
+<p class="p4"><span class="s1">B－空環 Lv.0,2026/3/26,20:00,Vicky Lee</span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.3~4,2026/3/26,20:00,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空瑜 Lv.0,2026/3/26,21:15,妙妙 簡</span></p>
+<p class="p4"><span class="s1">A－空瑜 Lv.1~2,2026/3/26,21:30,Chin<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.0,2026/3/27,11:00,芮錤<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.2,2026/3/27,11:00,@N.a🧘🏻♀️<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空瑜 Lv.0,2026/3/27,11:00,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.1,2026/3/27,12:30,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1,2026/3/27,12:30,小mo(子涵）<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.3~4,2026/3/27,12:30,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－舞綢 Open level,2026/3/27,14:00,Sue<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.1~2,2026/3/27,14:15,小mo(子涵）<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－現代小品,2026/3/27,14:30,芮錤<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1,2026/3/27,17:10,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.2~4,2026/3/27,17:15,Josty Lin</span></p>
+<p class="p4"><span class="s1">C－空環 Lv.1~2,2026/3/27,18:30,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.1~2,2026/3/27,18:30,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.2,2026/3/27,18:30,Vivi<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－鞦韆 Lv1~2,2026/3/27,19:45,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空環 Lv.1,2026/3/27,20:00,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.0~1,2026/3/27,20:00,芮錤<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.2~3,2026/3/27,20:00,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.1,2026/3/27,21:15,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.2,2026/3/27,21:30,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空瑜 Lv.1~2,2026/3/28,10:45,Ariel Lu</span></p>
+<p class="p4"><span class="s1">D－空瑜 Lv.1,2026/3/28,11:00,珍珍<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－原始瑜伽,2026/3/28,11:00,Jina<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空瑜 Lv.2~4,2026/3/28,12:00,Ariel Lu</span></p>
+<p class="p4"><span class="s1">A－空瑜 Lv.0~2,2026/3/28,12:30,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.2,2026/3/28,12:30,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.2,2026/3/28,13:30,Liz 🌰<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.2~3,2026/3/28,14:00,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.2~4,2026/3/28,14:00,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－舞綢 Lv.1,2026/3/28,14:30,萱<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.1,2026/3/28,15:00,Liz 🌰<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.2,2026/3/28,15:30,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.3~5,2026/3/28,15:30,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空瑜 Lv.0,2026/3/28,15:45,萱<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.0,2026/3/28,16:30,Liz 🌰<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.1~2,2026/3/28,17:00,萱<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空環 Lv.1~2,2026/3/28,17:00,寧寧<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－全方位流動瑜珈,2026/3/28,17:00,卡拉 卡拉</span></p>
+<p class="p4"><span class="s1">C－空瑜 Lv.2~4,2026/3/28,18:30,萱<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空環 Lv.0,2026/3/28,18:30,寧寧<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.1~2,2026/3/28,18:45,Lily 黃</span></p>
+<p class="p4"><span class="s1">B－開髖專班,2026/3/28,19:00,Jina<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.2~3,2026/3/28,20:00,Vicky Lee</span></p>
+<p class="p4"><span class="s1">B－空環 Lv.1~2,2026/3/29,10:00,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.2,2026/3/29,10:00,@N.a🧘🏻♀️<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.0~1,2026/3/29,11:30,小mo(子涵）<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空瑜 Lv.3~4,2026/3/29,11:30,Chloe Lee</span></p>
+<p class="p4"><span class="s1">C－空環 Lv.1~2,2026/3/29,12:00,蜜莉 戴</span></p>
+<p class="p4"><span class="s1">A－空瑜 Lv.1~2,2026/3/29,12:45,Chloe Lee</span></p>
+<p class="p4"><span class="s1">B－綢吊 Lv.0-2（90分）,2026/3/29,13:15,妙妙 簡</span></p>
+<p class="p4"><span class="s1">D－空環 Lv.0~1,2026/3/29,13:30,小mo(子涵）<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.2~3,2026/3/29,13:30,蜜莉 戴</span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.3~5,2026/3/29,14:30,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.1~2,2026/3/29,15:00,小mo(子涵）<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.2,2026/3/29,15:00,Vivi<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.1~2,2026/3/29,16:00,Liz 🌰<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1,2026/3/29,16:15,@N.a🧘🏻♀️<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－場地租借,2026/3/29,16:30,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空瑜 Lv.1~2,2026/3/29,17:00,小mo(子涵）<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.0~2,2026/3/29,17:30,芮錤<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.2~3,2026/3/29,17:30,Liz 🌰<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.2,2026/3/29,18:15,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1~2,2026/3/29,19:00,小mo(子涵）<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－現代小品,2026/3/29,19:30,芮錤<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.2~3,2026/3/29,19:30,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空環 Lv.1~2,2026/3/29,19:45,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.1~2,2026/3/30,10:30,巧巧 Hsu</span></p>
+<p class="p4"><span class="s1">C－空環 Lv.2~3,2026/3/30,10:30,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空環 Lv.2~3,2026/3/30,12:00,巧巧 Hsu</span></p>
+<p class="p4"><span class="s1">A－空瑜 Lv.0,2026/3/30,12:30,妙妙 簡</span></p>
+<p class="p4"><span class="s1">C－空環 Lv.1~2,2026/3/30,12:30,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1~2,2026/3/30,13:30,Lily 黃</span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.2,2026/3/30,14:30,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.3~5,2026/3/30,14:45,Lily 黃</span></p>
+<p class="p4"><span class="s1">C－空環 Lv.2~3,2026/3/30,18:00,Tako<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－舞綢 Lv.1~2,2026/3/30,18:15,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.1~3,2026/3/30,18:30,蜜莉 戴</span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1~2,2026/3/30,18:40,@N.a🧘🏻♀️<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.1~2,2026/3/30,19:15,XUAN<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－開髖專班,2026/3/30,19:45,Jina<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空瑜 Lv.0,2026/3/30,20:00,嗨底 Heidi <span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.2,2026/3/30,20:00,@N.a🧘🏻♀️<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－柔軟度開發,2026/3/30,20:30,XUAN<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空瑜 Lv.0,2026/3/30,21:30,Chin<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空瑜 Lv.1,2026/3/30,21:30,@N.a🧘🏻♀️<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.0~1,2026/3/31,10:30,壹壹<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－肩頸舒壓瑜伽,2026/3/31,12:00,Jina<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－舞綢 Lv.2,2026/3/31,12:30,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1,2026/3/31,13:10,@N.a🧘🏻♀️<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.1~2,2026/3/31,14:00,壹壹<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.2~4,2026/3/31,14:00,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空瑜 Lv.1~2,2026/3/31,14:30,珍珍<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.1~2,2026/3/31,15:30,Vivi<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1~2,2026/3/31,15:45,珍珍<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1,2026/3/31,18:00,Vivi<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空環 Lv.2~4,2026/3/31,18:30,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">D－空瑜 Lv.0~2,2026/3/31,18:30,珍珍<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.1~2,2026/3/31,18:30,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－空瑜 Lv.0~2,2026/3/31,19:15,Ariel Lu</span></p>
+<p class="p4"><span class="s1">A－柔軟度開發,2026/3/31,20:00,Sherry❤雪莉<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－空環 Lv.2~4,2026/3/31,20:00,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">B－舞綢 Lv.1,2026/3/31,20:30,Ariel Lu</span></p>
+<p class="p4"><span class="s1">D－空瑜 Lv.1~2,2026/3/31,21:00,姝姝<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">C－舞綢 Lv.1~2,2026/3/31,21:30,芊芊♡<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">A－空瑜 Lv.1~2,2026/3/31,21:30,Sherry❤雪莉 </span><span class="s3">`;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>// ------- CSV parser</span><span class="s2">（支援引號）</span><span class="s1"> -------</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>function parseCSV(text) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const rows = [];</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>let row = [];</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>let cur = '';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>let inQuotes = false;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>for (let i = 0; i &lt; text.length; i++) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const ch = text[i];</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const next = text[i + 1];</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>if (ch === '"') {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>if (inQuotes &amp;&amp; next === '"') { cur += '"'; i++; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>else { inQuotes = !inQuotes; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>} else if (ch === ',' &amp;&amp; !inQuotes) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>row.push(cur); cur = '';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>} else if ((ch === '\n' || ch === '\r') &amp;&amp; !inQuotes) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>if (ch === '\r' &amp;&amp; next === '\n') i++;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>row.push(cur); cur = '';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>if (row.some(c =&gt; c.trim() !== '')) rows.push(row);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>row = [];</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>} else {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>cur += ch;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if (cur.length || row.length) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>row.push(cur);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>if (row.some(c =&gt; c.trim() !== '')) rows.push(row);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>return rows;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>function norm(s){ return (s ?? '').toString().trim(); }</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>function normalizeDateToISO(d) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>// </span><span class="s2">支援：</span><span class="s1">2026/3/2 </span><span class="s2">或</span><span class="s1"> 2026/03/02</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const m = d.match(/^(\d{4})\/(\d{1,2})\/(\d{1,2})$/);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if (!m) return '';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const y = m[1];</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const mo = String(m[2]).padStart(2,'0');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const da = String(m[3]).padStart(2,'0');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>return `${y}-${mo}-${da}`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>function buildData(rows){</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const header = rows[0].map(norm);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const idx = name =&gt; header.indexOf(name);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const iCourse = idx('</span><span class="s2">課程</span><span class="s1">');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const iDate = idx('</span><span class="s2">日期</span><span class="s1">');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const iTime = idx('</span><span class="s2">時間</span><span class="s1">');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const iInstructor = idx('</span><span class="s2">指導者</span><span class="s1">');</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if ([iCourse,iDate,iTime,iInstructor].some(v =&gt; v &lt; 0)) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>throw new Error('CSV </span><span class="s2">欄位名找不到：請確認有「課程」「日期」「時間」「指導者」</span><span class="s1">');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const items = [];</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>for (let r = 1; r &lt; rows.length; r++){</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const row = rows[r];</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const course = norm(row[iCourse]);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const rawDate = norm(row[iDate]);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const time = norm(row[iTime]);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const instructor = norm(row[iInstructor]);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>if (!course || !rawDate || !time || !instructor) continue;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const date = normalizeDateToISO(rawDate);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>if (!date) continue;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>items.push({</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>instructor,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>date,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>course_name: course,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>start_time: time</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>return items;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>// ------- UI -------</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const elInstructor = document.getElementById('instructor');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const elDate = document.getElementById('date');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const elList = document.getElementById('classList');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const elSubmit = document.getElementById('submit');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const elStatus = document.getElementById('status');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const elWebapp = document.getElementById('webapp');</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>let DATA = [];</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>let FILTERED = [];</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>function escapeHtml(s){</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>return String(s).replace(/[&amp;&lt;&gt;"']/g, m =&gt; ({'&amp;':'&amp;amp;','&lt;':'&amp;lt;','&gt;':'&amp;gt;','"':'&amp;quot;',"'":'&amp;#39;'}[m]));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>function renderInstructors(){</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const names = Array.from(new Set(DATA.map(x =&gt; x.instructor)))</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>.sort((a,b)=&gt;a.localeCompare(b,'zh-Hant'));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>elInstructor.innerHTML = names.map(n =&gt; `&lt;option value="${escapeHtml(n)}"&gt;${escapeHtml(n)}&lt;/option&gt;`).join('');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>function renderList(){</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const instructor = elInstructor.value;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const date = elDate.value;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>elList.innerHTML = '';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>elStatus.textContent = '';</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if (!instructor || !date) { elSubmit.disabled = true; return; }</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>FILTERED = DATA</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>.filter(x =&gt; x.instructor === instructor &amp;&amp; x.date === date)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>.sort((a,b)=&gt;a.start_time.localeCompare(b.start_time));</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if (FILTERED.length === 0) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>elSubmit.disabled = true;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>elList.innerHTML = `&lt;div class="hint"&gt;</span><span class="s2">查無課堂</span><span class="s1">&lt;/div&gt;`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>return;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>elList.innerHTML = FILTERED.map((x, i) =&gt; `</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="item"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;input type="checkbox" id="c${i}" data-i="${i}"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="meta"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="title"&gt;${escapeHtml(x.course_name)}&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div&gt;&lt;span class="pill"&gt;${escapeHtml(x.start_time)}&lt;/span&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>`).join('');</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>elSubmit.disabled = false;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>function getSelected(){</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const checks = elList.querySelectorAll('input[type="checkbox"]');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const selected = [];</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>checks.forEach(ch =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>if (!ch.checked) return;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const i = Number(ch.getAttribute('data-i'));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>selected.push(FILTERED[i]);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>return selected;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>async function submit(){</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const url = (elWebapp.value || '').trim();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if (!url) { elStatus.textContent = '</span><span class="s2">請先貼上</span><span class="s1"> Web App URL'; return; }</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const instructor = elInstructor.value;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const date = elDate.value;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const items = getSelected();</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if (items.length === 0) { elStatus.textContent = '</span><span class="s2">請至少勾選一堂課</span><span class="s1">'; return; }</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>elSubmit.disabled = true;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>elStatus.textContent = '</span><span class="s2">送出中</span><span class="s1">…';</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const payload = { instructor, date, items };</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const resp = await fetch(url, {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>method: 'POST',</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>headers: { 'Content-Type':'application/json' },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>body: JSON.stringify(payload)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>});</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const json = await resp.json().catch(()=&gt;({ok:false,error:'</span><span class="s2">無法解析回應</span><span class="s1">'}));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>elStatus.textContent = json.ok</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>? `</span><span class="s2">完成：寫入</span><span class="s1"> ${json.inserted} </span><span class="s2">筆（重複的會自動略過）</span><span class="s1">`</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>: `</span><span class="s2">失敗：</span><span class="s1">${json.error || 'unknown'}`;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>elSubmit.disabled = false;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>(function(){</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const rows = parseCSV(CSV_TEXT);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>DATA = buildData(rows);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>renderInstructors();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>elInstructor.addEventListener('change', renderList);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>elDate.addEventListener('change', renderList);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>elSubmit.addEventListener('click', submit);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>})();</span></p>
+<p class="p1"><span class="s1">&lt;/script&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/body&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/html&gt;</span></p>
+</body>
+</html>
