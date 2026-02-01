@@ -26,7 +26,7 @@
   <div class="wrap">
     <div class="card">
       <label>Apps Script Web App URL</label>
-      <input id="webapp" type="text" placeholder="貼上 Web App URL（結尾通常是 /exec）" />
+      <input id="webapp" type="text" placeholder="https://script.google.com/macros/s/AKfycbyJADHe_DZdNIbfv_KPewAcBekEond-5Fw63i-RWCd1mHl_O9uGAQ-LTnzENZshjnhe/exec" />
       <div class="hint">第一次可先寫死在程式裡，或由使用者貼上。</div>
     </div>
 
@@ -678,7 +678,7 @@ C－空環 Lv.2~4,2026/3/31,20:00,芊芊♡
 B－舞綢 Lv.1,2026/3/31,20:30,Ariel Lu
 D－空瑜 Lv.1~2,2026/3/31,21:00,姝姝 
 C－舞綢 Lv.1~2,2026/3/31,21:30,芊芊♡ 
-A－空瑜 Lv.1~2,2026/3/31,21:30,Sherry❤雪莉`;
+A－空瑜 Lv.1~2,2026/3/31,21:30,Sherry❤雪莉 `;
 
   function parseCSV(text) {
     const rows = [];
@@ -818,7 +818,7 @@ A－空瑜 Lv.1~2,2026/3/31,21:30,Sherry❤雪莉`;
 
   async function submit(){
     const url = (elWebapp.value || '').trim();
-    if (!url) { elStatus.textContent = '請先貼上 Web App URL'; return; }
+    if (!url) { elStatus.textContent = 'https://script.google.com/macros/s/AKfycbyJADHe_DZdNIbfv_KPewAcBekEond-5Fw63i-RWCd1mHl_O9uGAQ-LTnzENZshjnhe/exec'; return; }
 
     const instructor = elInstructor.value;
     const date = elDate.value;
@@ -846,7 +846,7 @@ A－空瑜 Lv.1~2,2026/3/31,21:30,Sherry❤雪莉`;
 
   (function(){
     // 預填 URL
-    elWebapp.value = DEFAULT_WEB_APP_URL;
+    elWebapp.value = DEFAULT_https://script.google.com/macros/s/AKfycbyJADHe_DZdNIbfv_KPewAcBekEond-5Fw63i-RWCd1mHl_O9uGAQ-LTnzENZshjnhe/exec;
 
     const rows = parseCSV(CSV_TEXT);
     DATA = buildData(rows);
