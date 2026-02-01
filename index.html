@@ -10,32 +10,31 @@
     .card { background: #fff; border-radius: 14px; padding: 16px; box-shadow: 0 6px 18px rgba(0,0,0,.06); margin-bottom: 12px; }
     label { display: block; font-weight: 700; margin-bottom: 8px; }
     select, input[type="date"], input[type="text"] {
-      width: 100%; font-size: 18px; padding: 12px;
+      width: 100%; font-size: 18px; padding: 12px; box-sizing: border-box;
       border-radius: 10px; border: 1px solid #dcdfe6;
     }
     .hint { color: #666; font-size: 14px; margin-top: 6px; }
     .list { display: grid; gap: 10px; }
-    .item { display: flex; gap: 12px; border: 1px solid #e7e9ef; padding: 12px; border-radius: 12px; }
+    .item { display: flex; gap: 12px; border: 1px solid #e7e9ef; padding: 12px; border-radius: 12px; align-items: center; }
     .item input { width: 22px; height: 22px; }
     .meta { font-size: 15px; }
     .meta .title { font-weight: 800; }
     button {
       width: 100%; font-size: 18px; font-weight: 800;
       padding: 14px; border-radius: 12px;
-      border: 0; background: #2457ff; color: #fff;
+      border: 0; background: #2457ff; color: #fff; cursor: pointer;
     }
-    button:disabled { opacity: .5; }
-    .status { font-size: 14px; margin-top: 10px; white-space: pre-wrap; }
+    button:disabled { opacity: .5; cursor: not-allowed; }
+    .status { font-size: 14px; margin-top: 10px; white-space: pre-wrap; text-align: center; }
   </style>
 </head>
 <body>
 
 <div class="wrap">
-
   <div class="card">
     <label>Apps Script Web App URL</label>
     <input id="webapp" type="text" />
-    <div class="hint">可直接寫死或貼新的 Web App URL</div>
+    <div class="hint">請確認 URL 結尾為 /exec</div>
   </div>
 
   <div class="card">
@@ -57,15 +56,13 @@
     <button id="submit" disabled>送出（寫入 Google Sheet）</button>
     <div id="status" class="status"></div>
   </div>
-
 </div>
 
 <script>
 /* ================== 設定 ================== */
-const DEFAULT_WEB_APP_URL =
-  "https://script.google.com/macros/s/AKfycbyJADHe_DZdNIbfv_KPewAcBekEond-5Fw63i-RWCd1mHl_O9uGAQ-LTnzENZshjnhe/exec";
+const DEFAULT_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyJADHe_DZdNIbfv_KPewAcBekEond-5Fw63i-RWCd1mHl_O9uGAQ-LTnzENZshjnhe/exec";
 
-/* ================== CSV ================== */
+/* ================== CSV 資料================== */
 const CSV_TEXT = `課程,日期,時間,指導者
 B－空環 Lv.1~2,2026/3/2,10:30,巧巧 Hsu
 C－空環 Lv.2~3,2026/3/2,10:30,Tako 
@@ -686,9 +683,9 @@ C－空環 Lv.2~4,2026/3/31,20:00,芊芊♡
 B－舞綢 Lv.1,2026/3/31,20:30,Ariel Lu
 D－空瑜 Lv.1~2,2026/3/31,21:00,姝姝 
 C－舞綢 Lv.1~2,2026/3/31,21:30,芊芊♡ 
-A－空瑜 Lv.1~2,2026/3/31,21:30,Sherry❤雪莉`;
+A－空瑜 Lv.1~2,2026/3/31,21:30,Sherry❤雪莉`; 
 
-/* ================== 工具 ================== */
+/* ================== 工具與初始化 ================== */
 function parseCSV(text) {
   const lines = text.trim().split('\n');
   const headers = lines.shift().split(',');
@@ -700,7 +697,6 @@ function parseCSV(text) {
   });
 }
 
-/* ================== 狀態 ================== */
 const data = parseCSV(CSV_TEXT);
 const instructorSel = document.getElementById('instructor');
 const dateInput = document.getElementById('date');
@@ -711,21 +707,14 @@ const webappInput = document.getElementById('webapp');
 
 webappInput.value = DEFAULT_WEB_APP_URL;
 
-/* ================== 初始化 ================== */
+// 初始化指導者清單
 const instructors = [...new Set(data.map(d => d['指導者']).filter(Boolean))].sort();
 instructorSel.innerHTML = `<option value="">請選擇</option>` +
   instructors.map(n => `<option value="${n}">${n}</option>`).join('');
 
-/* ================== 更新課堂 ================== */
-function refreshList() {
-  listEl.innerHTML = '';
-  submitBtn.disabled = true;
+/* ================== 核心功能 ================== */
 
-  const instructor = instructorSel.value;
-  const date = dateInput.value;
-  if (!instructor || !date) return;
-
- function normalizeDate(s) {
+function normalizeDate(s) {
   return (s || '').replace(/[-/]/g, '');
 }
 
@@ -734,20 +723,20 @@ function refreshList() {
   submitBtn.disabled = true;
 
   const instructor = instructorSel.value;
-  const date = dateInput.value;
+  const date = dateInput.value; // 格式通常是 YYYY-MM-DD
   if (!instructor || !date) return;
 
-  const classes = data.filter(d =>
-    d['指導者'] === instructor &&
-    normalizeDate(d['日期']) === normalizeDate(date)
+  const targetDate = normalizeDate(date);
+  const classes = data.filter(d => 
+    d['指導者'] === instructor && normalizeDate(d['日期']) === targetDate
   );
 
-  classes.forEach(c => {
-    ...
-  });
-}
+  if (classes.length === 0) {
+    listEl.innerHTML = '<div class="hint">此日期無課程</div>';
+    return;
+  }
 
-  classes.forEach((c, i) => {
+  classes.forEach(c => {
     const div = document.createElement('div');
     div.className = 'item';
     div.innerHTML = `
@@ -761,7 +750,6 @@ function refreshList() {
   });
 }
 
-/* ================== 事件 ================== */
 instructorSel.onchange = refreshList;
 dateInput.onchange = refreshList;
 
@@ -769,7 +757,6 @@ listEl.addEventListener('change', () => {
   submitBtn.disabled = !listEl.querySelector('input:checked');
 });
 
-/* ================== 送出 ================== */
 submitBtn.onclick = () => {
   const items = [...listEl.querySelectorAll('input:checked')].map(cb => ({
     course_name: cb.dataset.course,
@@ -785,14 +772,14 @@ submitBtn.onclick = () => {
   const url = webappInput.value + '?' + params.toString();
   statusEl.textContent = '送出中…';
 
-fetch(url, { mode: "no-cors" })
-  .then(() => {
-    statusEl.textContent = '✅ 已送出（資料已寫入）';
-  })
-  .catch(() => {
-    statusEl.textContent = '❌ 送出失敗';
-  });
-
+  // 使用 no-cors 模式發送，雖然看不到 GAS 的 return 內容，但可以成功觸發寫入
+  fetch(url, { mode: "no-cors" })
+    .then(() => {
+      statusEl.textContent = '✅ 已送出（請檢查試算表）';
+      // 送出後清空勾選
+      listEl.querySelectorAll('input:checked').forEach(cb => cb.checked = false);
+      submitBtn.disabled = true;
+    })
     .catch(err => {
       statusEl.textContent = '❌ 連線失敗';
       console.error(err);
