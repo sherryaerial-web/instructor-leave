@@ -725,27 +725,55 @@ try {
   instructorSel.innerHTML = '<option value="">資料載入錯誤</option>';
 }
 
-/* ================== 列表更新 ================== */
+/* ================== 列表更新 (增強日期比對版) ================== */
 function refreshList() {
   listEl.innerHTML = '';
   submitBtn.disabled = true;
   statusEl.textContent = '';
 
   const selectedInstructor = instructorSel.value;
-  const selectedDate = dateInput.value; // YYYY-MM-DD
+  const selectedDate = dateInput.value; // HTML 格式通常是 "2026-03-02"
 
   if (!selectedInstructor || !selectedDate) {
     listEl.innerHTML = '<div class="hint">請先選擇指導者與日期</div>';
     return;
   }
 
-  // 將選中的日期格式從 2026-03-02 轉為 2026/3/2 以匹配 CSV
-  const dateParts = selectedDate.split('-');
-  const formattedDate = `${dateParts[0]}/${parseInt(dateParts[1])}/${parseInt(dateParts[2])}`;
+  // 標準化函式：將 "2026-03-02" 或 "2026/3/2" 通通轉成 "202632"
+  function getPureNumber(dateStr) {
+    if (!dateStr) return '';
+    return dateStr
+      .replace(/[-/]/g, '') // 去掉 - 和 /
+      .split('')
+      .map((char, i, arr) => {
+        // 這步是為了處理補零問題：把 "20260302" 變成 "202632"
+        // 或者是簡單點，我們直接將字串轉為日期物件再比對
+        return char;
+      }).join('');
+  }
 
-  const classes = rawData.filter(d => 
-    d['指導者'] === selectedInstructor && d['日期'] === formattedDate
-  );
+  // 更好的做法：使用 Date 物件比對，排除格式干擾
+  const targetDateObj = new Date(selectedDate);
+  const targetY = targetDateObj.getFullYear();
+  const targetM = targetDateObj.getMonth() + 1;
+  const targetD = targetDateObj.getDate();
+
+  const classes = rawData.filter(d => {
+    if (!d['日期']) return false;
+    
+    // 解析 CSV 裡的日期 (2026/3/2)
+    const csvDateParts = d['日期'].split('/');
+    if (csvDateParts.length !== 3) return false;
+
+    const csvY = parseInt(csvDateParts[0]);
+    const csvM = parseInt(csvDateParts[1]);
+    const csvD = parseInt(csvDateParts[2]);
+
+    return d['指導者'] === selectedInstructor && 
+           csvY === targetY && 
+           csvM === targetM && 
+           csvD === targetD;
+  });
 
   if (classes.length === 0) {
     listEl.innerHTML = '<div class="hint">⚠️ 該日期找不到此指導者的課堂</div>';
@@ -765,12 +793,6 @@ function refreshList() {
     listEl.appendChild(div);
   });
 }
-
-instructorSel.addEventListener('change', refreshList);
-dateInput.addEventListener('change', refreshList);
-listEl.addEventListener('change', () => {
-  submitBtn.disabled = !listEl.querySelector('input:checked');
-});
 
 /* ================== 送出資料 ================== */
 submitBtn.onclick = () => {
