@@ -828,13 +828,16 @@ A－空瑜 Lv.1~2,2026/3/31,21:30,Sherry❤雪莉 `;
     elSubmit.disabled = true;
     elStatus.textContent = '送出中…';
 
-    const payload = { instructor, date, items };
+    // ✅ 關鍵：用表單格式送出，避免 CORS preflight（OPTIONS）被 Apps Script 擋
+const form = new URLSearchParams();
+form.set('instructor', instructor);
+form.set('date', date);
+form.set('items', JSON.stringify(items.map(x => ({ course_name: x.course_name, start_time: x.start_time }))));
 
-    const resp = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type':'application/json' },
-      body: JSON.stringify(payload)
-    });
+const resp = await fetch(url, {
+  method: 'POST',
+  body: form
+});
 
     const json = await resp.json().catch(()=>({ok:false,error:'無法解析回應'}));
     elStatus.textContent = json.ok
