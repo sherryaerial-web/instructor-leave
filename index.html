@@ -3,66 +3,62 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>指導者請假勾選</title>
+  <title>指導者請假系統</title>
   <style>
-    * { box-sizing: border-box; } /* 確保寬度計算正確 */
-    body { font-family: -apple-system, BlinkMacSystemFont, "Noto Sans TC", Arial; margin: 0; background: #f6f7fb; }
+    * { box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Noto Sans TC", Arial; margin: 0; background: #f6f7fb; color: #333; }
     .wrap { max-width: 720px; margin: 0 auto; padding: 16px; }
     .card { background: #fff; border-radius: 14px; padding: 16px; box-shadow: 0 6px 18px rgba(0,0,0,.06); margin-bottom: 12px; }
-    label { display: block; font-weight: 700; margin-bottom: 8px; }
-    select, input[type="date"], input[type="text"] {
+    label { display: block; font-weight: 700; margin-bottom: 8px; color: #444; }
+    select, input[type="date"] {
       width: 100%; font-size: 18px; padding: 12px;
       border-radius: 10px; border: 1px solid #dcdfe6; background: #fff;
     }
-    .hint { color: #666; font-size: 14px; margin-top: 6px; }
     .list { display: grid; gap: 10px; }
-    .item { display: flex; gap: 12px; border: 1px solid #e7e9ef; padding: 12px; border-radius: 12px; align-items: center; }
-    .item input { width: 24px; height: 24px; flex-shrink: 0; }
+    .item { display: flex; gap: 12px; border: 1px solid #e7e9ef; padding: 12px; border-radius: 12px; align-items: center; transition: 0.2s; }
+    .item:has(input:checked) { background: #f0f4ff; border-color: #2457ff; }
+    .item input { width: 24px; height: 24px; flex-shrink: 0; cursor: pointer; }
     .meta { font-size: 15px; }
-    .meta .title { font-weight: 800; color: #333; }
+    .meta .title { font-weight: 800; }
     button {
-      width: 100%; font-size: 18px; font-weight: 800;
-      padding: 14px; border-radius: 12px;
-      border: 0; background: #2457ff; color: #fff; cursor: pointer;
+      width: 100%; font-size: 18px; font-weight: 800; padding: 16px;
+      border-radius: 12px; border: 0; background: #2457ff; color: #fff; cursor: pointer;
     }
     button:disabled { background: #ccc; cursor: not-allowed; }
-    .status { font-size: 14px; margin-top: 10px; text-align: center; color: #2457ff; font-weight: bold; }
+    .status { font-size: 14px; margin-top: 12px; text-align: center; font-weight: bold; min-height: 1.5em; }
+    .hint { color: #888; text-align: center; padding: 20px; }
   </style>
 </head>
 <body>
 
 <div class="wrap">
- <div class="card" style="display:none;">
-  <label>Apps Script Web App URL</label>
-  <input id="webapp" type="text" />
-</div>
-
   <div class="card">
-    <label>1. 選指導者</label>
+    <label>1. 選擇指導者</label>
     <select id="instructor"><option value="">載入中...</option></select>
   </div>
 
   <div class="card">
-    <label>2. 選日期</label>
+    <label>2. 選擇請假日期</label>
     <input id="date" type="date" />
   </div>
 
   <div class="card">
-    <label>3. 勾選要請假的課堂</label>
-    <div id="classList" class="list"><div class="hint">請先完成上方選擇</div></div>
+    <label>3. 勾選課堂 (可複選)</label>
+    <div id="classList" class="list">
+      <div class="hint">請先完成上方選擇</div>
+    </div>
   </div>
 
   <div class="card">
-    <button id="submit" disabled>送出（寫入 Google Sheet）</button>
+    <button id="submit" disabled>確認送出</button>
     <div id="status" class="status"></div>
   </div>
 </div>
 
 <script>
-/* ================== 配置 ================== */
-const DEFAULT_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyJADHe_DZdNIbfv_KPewAcBekEond-5Fw63i-RWCd1mHl_O9uGAQ-LTnzENZshjnhe/exec";
+/* ================== 配置區 (直接寫死網址) ================== */
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyJADHe_DZdNIbfv_KPewAcBekEond-5Fw63i-RWCd1mHl_O9uGAQ-LTnzENZshjnhe/exec";
 
-// 這裡放入你提供的完整 CSV 字串
 const CSV_TEXT = `課程,日期,時間,指導者
 B－空環 Lv.1~2,2026/3/2,10:30,巧巧 Hsu
 C－空環 Lv.2~3,2026/3/2,10:30,Tako 
@@ -689,14 +685,10 @@ A－空瑜 Lv.1~2,2026/3/31,21:30,Sherry❤雪莉`;
 function parseCSV(text) {
   const lines = text.trim().split('\n');
   const headers = lines[0].split(',').map(h => h.trim());
-  
   return lines.slice(1).map(line => {
     const cols = line.split(',');
     const obj = {};
-    headers.forEach((h, i) => {
-      // 這裡非常重要：使用 trim() 去掉所有看不見的空格與換行符
-      obj[h] = (cols[i] || '').trim().replace(/\r/g, ''); 
-    });
+    headers.forEach((h, i) => obj[h] = (cols[i] || '').trim().replace(/\r/g, ''));
     return obj;
   });
 }
@@ -707,76 +699,39 @@ const dateInput = document.getElementById('date');
 const listEl = document.getElementById('classList');
 const submitBtn = document.getElementById('submit');
 const statusEl = document.getElementById('status');
-const webappInput = document.getElementById('webapp');
 
-webappInput.value = DEFAULT_WEB_APP_URL;
+// 初始化指導者下拉選單
+const instructorNames = [...new Set(rawData.map(d => d['指導者']))].filter(Boolean).sort();
+instructorSel.innerHTML = '<option value="">請選擇指導者</option>' + 
+  instructorNames.map(name => `<option value="${name}">${name}</option>`).join('');
 
-/* ================== 初始化選單 ================== */
-try {
-  // 提取所有不重複的指導者姓名，並過濾掉空值
-  const instructorNames = [...new Set(rawData.map(d => d['指導者']))]
-    .filter(name => name && name.length > 0)
-    .sort();
-
-  instructorSel.innerHTML = '<option value="">請選擇指導者</option>' + 
-    instructorNames.map(name => `<option value="${name}">${name}</option>`).join('');
-} catch (err) {
-  console.error("初始化選單失敗:", err);
-  instructorSel.innerHTML = '<option value="">資料載入錯誤</option>';
-}
-
-/* ================== 列表更新 (增強日期比對版) ================== */
+/* ================== 核心功能：日期比對與清單顯示 ================== */
 function refreshList() {
   listEl.innerHTML = '';
   submitBtn.disabled = true;
   statusEl.textContent = '';
 
-  const selectedInstructor = instructorSel.value;
-  const selectedDate = dateInput.value; // HTML 格式通常是 "2026-03-02"
+  const selIns = instructorSel.value;
+  const selDate = dateInput.value; // "2026-03-02"
 
-  if (!selectedInstructor || !selectedDate) {
-    listEl.innerHTML = '<div class="hint">請先選擇指導者與日期</div>';
+  if (!selIns || !selDate) {
+    listEl.innerHTML = '<div class="hint">請選擇指導者與日期</div>';
     return;
   }
 
-  // 標準化函式：將 "2026-03-02" 或 "2026/3/2" 通通轉成 "202632"
-  function getPureNumber(dateStr) {
-    if (!dateStr) return '';
-    return dateStr
-      .replace(/[-/]/g, '') // 去掉 - 和 /
-      .split('')
-      .map((char, i, arr) => {
-        // 這步是為了處理補零問題：把 "20260302" 變成 "202632"
-        // 或者是簡單點，我們直接將字串轉為日期物件再比對
-        return char;
-      }).join('');
-  }
-
-  // 更好的做法：使用 Date 物件比對，排除格式干擾
-  const targetDateObj = new Date(selectedDate);
-  const targetY = targetDateObj.getFullYear();
-  const targetM = targetDateObj.getMonth() + 1;
-  const targetD = targetDateObj.getDate();
+  // 強大日期比對：將兩邊都轉換成 Date 物件確保 03月 == 3月
+  const targetDate = new Date(selDate);
+  const targetYMD = `${targetDate.getFullYear()}/${targetDate.getMonth()+1}/${targetDate.getDate()}`;
 
   const classes = rawData.filter(d => {
     if (!d['日期']) return false;
-    
-    // 解析 CSV 裡的日期 (2026/3/2)
-    const csvDateParts = d['日期'].split('/');
-    if (csvDateParts.length !== 3) return false;
-
-    const csvY = parseInt(csvDateParts[0]);
-    const csvM = parseInt(csvDateParts[1]);
-    const csvD = parseInt(csvDateParts[2]);
-
-    return d['指導者'] === selectedInstructor && 
-           csvY === targetY && 
-           csvM === targetM && 
-           csvD === targetD;
+    const dDate = new Date(d['日期'].replace(/\//g, '-')); // 把 2026/3/2 轉為 2026-3-2 讓 JS 讀取
+    const dYMD = `${dDate.getFullYear()}/${dDate.getMonth()+1}/${dDate.getDate()}`;
+    return d['指導者'] === selIns && dYMD === targetYMD;
   });
 
   if (classes.length === 0) {
-    listEl.innerHTML = '<div class="hint">⚠️ 該日期找不到此指導者的課堂</div>';
+    listEl.innerHTML = '<div class="hint">⚠️ 該日期找不到您的課堂</div>';
     return;
   }
 
@@ -794,32 +749,40 @@ function refreshList() {
   });
 }
 
-/* ================== 送出資料 ================== */
+/* ================== 事件監聽 ================== */
+instructorSel.onchange = refreshList;
+dateInput.onchange = refreshList;
+listEl.onchange = () => {
+  submitBtn.disabled = !listEl.querySelector('input:checked');
+};
+
 submitBtn.onclick = () => {
-  const selectedItems = [...listEl.querySelectorAll('input:checked')].map(cb => ({
+  const selected = [...listEl.querySelectorAll('input:checked')].map(cb => ({
     course_name: cb.dataset.course,
     start_time: cb.dataset.time
   }));
 
+  statusEl.style.color = "#2457ff";
+  statusEl.textContent = '🚀 傳送中...';
+  submitBtn.disabled = true;
+
   const params = new URLSearchParams({
     instructor: instructorSel.value,
     date: dateInput.value,
-    items: JSON.stringify(selectedItems)
+    items: JSON.stringify(selected)
   });
 
-  const finalUrl = webappInput.value + '?' + params.toString();
-  
-  statusEl.textContent = '🚀 傳送中，請稍候...';
-  submitBtn.disabled = true;
-
-  fetch(finalUrl, { mode: "no-cors" })
+  // 使用我們在頂部定義的 WEB_APP_URL
+  fetch(WEB_APP_URL + '?' + params.toString(), { mode: "no-cors" })
     .then(() => {
-      statusEl.textContent = '✅ 資料已成功發送！';
+      statusEl.style.color = "green";
+      statusEl.textContent = '✅ 已成功送出！';
       listEl.querySelectorAll('input:checked').forEach(cb => cb.checked = false);
     })
     .catch(err => {
-      statusEl.textContent = '❌ 傳送失敗，請檢查網路';
-      console.error(err);
+      statusEl.style.color = "red";
+      statusEl.textContent = '❌ 傳送失敗，請重試';
+      submitBtn.disabled = false;
     });
 };
 </script>
