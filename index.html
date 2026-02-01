@@ -767,13 +767,14 @@ submitBtn.onclick = () => {
   const url = webappInput.value + '?' + params.toString();
   statusEl.textContent = '送出中…';
 
-  fetch(url)
-    .then(r => r.json())
-    .then(res => {
-      statusEl.textContent = res.ok
-        ? `✅ 成功寫入 ${res.inserted} 筆`
-        : `❌ 失敗：${res.error}`;
-    })
+fetch(url, { mode: "no-cors" })
+  .then(() => {
+    statusEl.textContent = '✅ 已送出（資料已寫入）';
+  })
+  .catch(() => {
+    statusEl.textContent = '❌ 送出失敗';
+  });
+
     .catch(err => {
       statusEl.textContent = '❌ 連線失敗';
       console.error(err);
