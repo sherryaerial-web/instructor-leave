@@ -722,12 +722,30 @@ function refreshList() {
   submitBtn.disabled = true;
 
   const instructor = instructorSel.value;
-  const date = dateInput.value.replace(/-/g, '/');
+  const date = dateInput.value;
+  if (!instructor || !date) return;
+
+ function normalizeDate(s) {
+  return (s || '').replace(/[-/]/g, '');
+}
+
+function refreshList() {
+  listEl.innerHTML = '';
+  submitBtn.disabled = true;
+
+  const instructor = instructorSel.value;
+  const date = dateInput.value;
   if (!instructor || !date) return;
 
   const classes = data.filter(d =>
-    d['指導者'] === instructor && d['日期'] === date
+    d['指導者'] === instructor &&
+    normalizeDate(d['日期']) === normalizeDate(date)
   );
+
+  classes.forEach(c => {
+    ...
+  });
+}
 
   classes.forEach((c, i) => {
     const div = document.createElement('div');
