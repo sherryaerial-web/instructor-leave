@@ -12,21 +12,20 @@
     label { display: block; font-weight: 700; margin-bottom: 8px; color: #444; }
     select, input[type="date"] {
       width: 100%; font-size: 18px; padding: 12px;
-      border-radius: 10px; border: 1px solid #dcdfe6; background: #fff;
+      border-radius: 10px; border: 1px solid #dcdfe6; background: #fff; appearance: none;
     }
     .list { display: grid; gap: 10px; }
-    .item { display: flex; gap: 12px; border: 1px solid #e7e9ef; padding: 12px; border-radius: 12px; align-items: center; transition: 0.2s; }
-    .item:has(input:checked) { background: #f0f4ff; border-color: #2457ff; }
-    .item input { width: 24px; height: 24px; flex-shrink: 0; cursor: pointer; }
-    .meta { font-size: 15px; }
-    .meta .title { font-weight: 800; }
+    .item { display: flex; gap: 12px; border: 1px solid #e7e9ef; padding: 12px; border-radius: 12px; align-items: center; }
+    .item input { width: 28px; height: 28px; flex-shrink: 0; }
+    .meta { font-size: 16px; }
+    .meta .title { font-weight: 800; color: #000; }
     button {
       width: 100%; font-size: 18px; font-weight: 800; padding: 16px;
       border-radius: 12px; border: 0; background: #2457ff; color: #fff; cursor: pointer;
     }
-    button:disabled { background: #ccc; cursor: not-allowed; }
-    .status { font-size: 14px; margin-top: 12px; text-align: center; font-weight: bold; min-height: 1.5em; }
-    .hint { color: #888; text-align: center; padding: 20px; }
+    button:disabled { background: #ccc; }
+    .status { font-size: 14px; margin-top: 12px; text-align: center; font-weight: bold; }
+    .hint { color: #888; text-align: center; padding: 20px; font-style: italic; }
   </style>
 </head>
 <body>
@@ -43,7 +42,7 @@
   </div>
 
   <div class="card">
-    <label>3. 勾選課堂 (可複選)</label>
+    <label>3. 勾選課堂</label>
     <div id="classList" class="list">
       <div class="hint">請先完成上方選擇</div>
     </div>
@@ -56,9 +55,10 @@
 </div>
 
 <script>
-/* ================== 配置區 (直接寫死網址) ================== */
+/* ================== 配置區 ================== */
 const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyJADHe_DZdNIbfv_KPewAcBekEond-5Fw63i-RWCd1mHl_O9uGAQ-LTnzENZshjnhe/exec";
 
+// 範例資料 (請記得放入你完整的 CSV)
 const CSV_TEXT = `課程,日期,時間,指導者
 B－空環 Lv.1~2,2026/3/2,10:30,巧巧 Hsu
 C－空環 Lv.2~3,2026/3/2,10:30,Tako 
@@ -679,16 +679,16 @@ C－空環 Lv.2~4,2026/3/31,20:00,芊芊♡
 B－舞綢 Lv.1,2026/3/31,20:30,Ariel Lu
 D－空瑜 Lv.1~2,2026/3/31,21:00,姝姝 
 C－舞綢 Lv.1~2,2026/3/31,21:30,芊芊♡ 
-A－空瑜 Lv.1~2,2026/3/31,21:30,Sherry❤雪莉`; 
+A－空瑜 Lv.1~2,2026/3/31,21:30,Sherry❤雪莉`;
 
-/* ================== 解析邏輯 ================== */
+/* ================== 解析與比對邏輯 ================== */
 function parseCSV(text) {
   const lines = text.trim().split('\n');
   const headers = lines[0].split(',').map(h => h.trim());
   return lines.slice(1).map(line => {
     const cols = line.split(',');
     const obj = {};
-    headers.forEach((h, i) => obj[h] = (cols[i] || '').trim().replace(/\r/g, ''));
+    headers.forEach((h, i) => obj[h] = (cols[i] || '').trim());
     return obj;
   });
 }
@@ -700,38 +700,38 @@ const listEl = document.getElementById('classList');
 const submitBtn = document.getElementById('submit');
 const statusEl = document.getElementById('status');
 
-// 初始化指導者下拉選單
+// 初始化指導者選單
 const instructorNames = [...new Set(rawData.map(d => d['指導者']))].filter(Boolean).sort();
 instructorSel.innerHTML = '<option value="">請選擇指導者</option>' + 
   instructorNames.map(name => `<option value="${name}">${name}</option>`).join('');
 
-/* ================== 核心功能：日期比對與清單顯示 ================== */
 function refreshList() {
   listEl.innerHTML = '';
   submitBtn.disabled = true;
   statusEl.textContent = '';
 
   const selIns = instructorSel.value;
-  const selDate = dateInput.value; // "2026-03-02"
+  const selDate = dateInput.value; // 格式: "2026-03-02"
 
   if (!selIns || !selDate) {
     listEl.innerHTML = '<div class="hint">請選擇指導者與日期</div>';
     return;
   }
 
-  // 強大日期比對：將兩邊都轉換成 Date 物件確保 03月 == 3月
-  const targetDate = new Date(selDate);
-  const targetYMD = `${targetDate.getFullYear()}/${targetDate.getMonth()+1}/${targetDate.getDate()}`;
+  // 轉換 selDate 為 "2026/3/2" 的格式
+  const d = selDate.split('-');
+  const formattedSelDate = `${parseInt(d[0])}/${parseInt(d[1])}/${parseInt(d[2])}`;
 
-  const classes = rawData.filter(d => {
-    if (!d['日期']) return false;
-    const dDate = new Date(d['日期'].replace(/\//g, '-')); // 把 2026/3/2 轉為 2026-3-2 讓 JS 讀取
-    const dYMD = `${dDate.getFullYear()}/${dDate.getMonth()+1}/${dDate.getDate()}`;
-    return d['指導者'] === selIns && dYMD === targetYMD;
+  console.log("正在比對指導者:", selIns, "與日期:", formattedSelDate);
+
+  const classes = rawData.filter(item => {
+    // 強制移除 CSV 日期中可能的隱形空格
+    const cleanCsvDate = item['日期'].replace(/\s/g, '');
+    return item['指導者'] === selIns && cleanCsvDate === formattedSelDate;
   });
 
   if (classes.length === 0) {
-    listEl.innerHTML = '<div class="hint">⚠️ 該日期找不到您的課堂</div>';
+    listEl.innerHTML = '<div class="hint">⚠️ 找不到該日期的課堂</div>';
     return;
   }
 
@@ -749,7 +749,6 @@ function refreshList() {
   });
 }
 
-/* ================== 事件監聽 ================== */
 instructorSel.onchange = refreshList;
 dateInput.onchange = refreshList;
 listEl.onchange = () => {
@@ -772,16 +771,16 @@ submitBtn.onclick = () => {
     items: JSON.stringify(selected)
   });
 
-  // 使用我們在頂部定義的 WEB_APP_URL
   fetch(WEB_APP_URL + '?' + params.toString(), { mode: "no-cors" })
     .then(() => {
       statusEl.style.color = "green";
       statusEl.textContent = '✅ 已成功送出！';
       listEl.querySelectorAll('input:checked').forEach(cb => cb.checked = false);
+      submitBtn.disabled = true;
     })
     .catch(err => {
       statusEl.style.color = "red";
-      statusEl.textContent = '❌ 傳送失敗，請重試';
+      statusEl.textContent = '❌ 失敗，請檢查網路';
       submitBtn.disabled = false;
     });
 };
