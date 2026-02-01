@@ -5,60 +5,68 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>指導者請假勾選</title>
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, "Noto Sans TC", "Segoe UI", Arial, sans-serif; margin: 0; background: #f6f7fb; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Noto Sans TC", Arial; margin: 0; background: #f6f7fb; }
     .wrap { max-width: 720px; margin: 0 auto; padding: 16px; }
     .card { background: #fff; border-radius: 14px; padding: 16px; box-shadow: 0 6px 18px rgba(0,0,0,.06); margin-bottom: 12px; }
-    label { display: block; font-weight: 700; margin: 0 0 8px; }
-    select, input[type="date"], input[type="text"] { width: 100%; font-size: 18px; padding: 12px; border-radius: 10px; border: 1px solid #dcdfe6; }
+    label { display: block; font-weight: 700; margin-bottom: 8px; }
+    select, input[type="date"], input[type="text"] {
+      width: 100%; font-size: 18px; padding: 12px;
+      border-radius: 10px; border: 1px solid #dcdfe6;
+    }
     .hint { color: #666; font-size: 14px; margin-top: 6px; }
-    .list { display: grid; gap: 10px; margin-top: 10px; }
-    .item { display: flex; gap: 12px; align-items: flex-start; border: 1px solid #e7e9ef; padding: 12px; border-radius: 12px; }
-    .item input { width: 24px; height: 24px; margin-top: 2px; }
-    .meta { font-size: 15px; line-height: 1.35; }
-    .meta .title { font-weight: 800; font-size: 16px; }
-    .pill { display: inline-block; padding: 2px 8px; border-radius: 999px; background: #eef3ff; color: #2457ff; font-size: 12px; margin-right: 6px; }
-    button { width: 100%; font-size: 18px; font-weight: 800; padding: 14px 12px; border-radius: 12px; border: 0; background: #2457ff; color: #fff; }
+    .list { display: grid; gap: 10px; }
+    .item { display: flex; gap: 12px; border: 1px solid #e7e9ef; padding: 12px; border-radius: 12px; }
+    .item input { width: 22px; height: 22px; }
+    .meta { font-size: 15px; }
+    .meta .title { font-weight: 800; }
+    button {
+      width: 100%; font-size: 18px; font-weight: 800;
+      padding: 14px; border-radius: 12px;
+      border: 0; background: #2457ff; color: #fff;
+    }
     button:disabled { opacity: .5; }
-    .status { font-size: 14px; margin-top: 10px; color: #333; white-space: pre-wrap; }
+    .status { font-size: 14px; margin-top: 10px; white-space: pre-wrap; }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="card">
-     <label>Apps Script Web App URL</label>
-      <input id="webapp" type="text" placeholder="https://script.google.com/macros/s/AKfycbyJADHe_DZdNIbfv_KPewAcBekEond-5Fw63i-RWCd1mHl_O9uGAQ-LTnzENZshjnhe/exec"/>
-      <div class="hint">第一次可先寫死在程式裡，或由使用者貼上。</div>
-    </div>
 
-    <div class="card">
-      <label>選指導者</label>
-      <select id="instructor"></select>
-      <div class="hint">名單會從 CSV 的「指導者」欄自動生成。</div>
-    </div>
+<div class="wrap">
 
-    <div class="card">
-      <label>選日期</label>
-      <input id="date" type="date" />
-      <div class="hint">選完日期後會列出該日該指導者的課堂。</div>
-    </div>
-
-    <div class="card">
-      <label>勾選要請假的課堂（整堂）</label>
-      <div id="classList" class="list"></div>
-    </div>
-
-    <div class="card">
-      <button id="submit" disabled>送出（寫入 Google Sheet）</button>
-      <div id="status" class="status"></div>
-    </div>
+  <div class="card">
+    <label>Apps Script Web App URL</label>
+    <input id="webapp" type="text" />
+    <div class="hint">可直接寫死或貼新的 Web App URL</div>
   </div>
 
-<script>
-  // 你可以先把 URL 寫死（比較省事）
-const DEFAULT_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyJADHe_DZdNIbfv_KPewAcBekEond-5Fw63i-RWCd1mHl_O9uGAQ-LTnzENZshjnhe/exec";
+  <div class="card">
+    <label>選指導者</label>
+    <select id="instructor"></select>
+  </div>
 
-  // CSV 必須是「逗號分隔 + 每筆一行」
-  const CSV_TEXT = `課程,日期,時間,指導者
+  <div class="card">
+    <label>選日期</label>
+    <input id="date" type="date" />
+  </div>
+
+  <div class="card">
+    <label>勾選要請假的課堂</label>
+    <div id="classList" class="list"></div>
+  </div>
+
+  <div class="card">
+    <button id="submit" disabled>送出（寫入 Google Sheet）</button>
+    <div id="status" class="status"></div>
+  </div>
+
+</div>
+
+<script>
+/* ================== 設定 ================== */
+const DEFAULT_WEB_APP_URL =
+  "https://script.google.com/macros/s/AKfycbyJADHe_DZdNIbfv_KPewAcBekEond-5Fw63i-RWCd1mHl_O9uGAQ-LTnzENZshjnhe/exec";
+
+/* ================== CSV ================== */
+const CSV_TEXT = `課程,日期,時間,指導者
 B－空環 Lv.1~2,2026/3/2,10:30,巧巧 Hsu
 C－空環 Lv.2~3,2026/3/2,10:30,Tako 
 B－空環 Lv.2~3,2026/3/2,12:00,巧巧 Hsu
@@ -678,190 +686,100 @@ C－空環 Lv.2~4,2026/3/31,20:00,芊芊♡
 B－舞綢 Lv.1,2026/3/31,20:30,Ariel Lu
 D－空瑜 Lv.1~2,2026/3/31,21:00,姝姝 
 C－舞綢 Lv.1~2,2026/3/31,21:30,芊芊♡ 
-A－空瑜 Lv.1~2,2026/3/31,21:30,Sherry❤雪莉 `;
+A－空瑜 Lv.1~2,2026/3/31,21:30,Sherry❤雪莉`;
 
-  function parseCSV(text) {
-    const rows = [];
-    let row = [];
-    let cur = '';
-    let inQuotes = false;
+/* ================== 工具 ================== */
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  const headers = lines.shift().split(',');
+  return lines.map(l => {
+    const cols = l.split(',');
+    const obj = {};
+    headers.forEach((h, i) => obj[h] = (cols[i] || '').trim());
+    return obj;
+  });
+}
 
-    for (let i = 0; i < text.length; i++) {
-      const ch = text[i];
-      const next = text[i + 1];
+/* ================== 狀態 ================== */
+const data = parseCSV(CSV_TEXT);
+const instructorSel = document.getElementById('instructor');
+const dateInput = document.getElementById('date');
+const listEl = document.getElementById('classList');
+const submitBtn = document.getElementById('submit');
+const statusEl = document.getElementById('status');
+const webappInput = document.getElementById('webapp');
 
-      if (ch === '"') {
-        if (inQuotes && next === '"') { cur += '"'; i++; }
-        else { inQuotes = !inQuotes; }
-      } else if (ch === ',' && !inQuotes) {
-        row.push(cur); cur = '';
-      } else if ((ch === '\n' || ch === '\r') && !inQuotes) {
-        if (ch === '\r' && next === '\n') i++;
-        row.push(cur); cur = '';
-        if (row.some(c => c.trim() !== '')) rows.push(row);
-        row = [];
-      } else {
-        cur += ch;
-      }
-    }
-    if (cur.length || row.length) {
-      row.push(cur);
-      if (row.some(c => c.trim() !== '')) rows.push(row);
-    }
-    return rows;
-  }
+webappInput.value = DEFAULT_WEB_APP_URL;
 
-  function norm(s){ return (s ?? '').toString().trim(); }
+/* ================== 初始化 ================== */
+const instructors = [...new Set(data.map(d => d['指導者']).filter(Boolean))].sort();
+instructorSel.innerHTML = `<option value="">請選擇</option>` +
+  instructors.map(n => `<option value="${n}">${n}</option>`).join('');
 
-  function normalizeDateToISO(d) {
-    // 支援：2026/3/2 或 2026/03/02
-    const m = d.match(/^(\d{4})\/(\d{1,2})\/(\d{1,2})$/);
-    if (!m) return '';
-    const y = m[1];
-    const mo = String(m[2]).padStart(2,'0');
-    const da = String(m[3]).padStart(2,'0');
-    return `${y}-${mo}-${da}`;
-  }
+/* ================== 更新課堂 ================== */
+function refreshList() {
+  listEl.innerHTML = '';
+  submitBtn.disabled = true;
 
-  function buildData(rows){
-    const header = rows[0].map(norm);
-    const idx = name => header.indexOf(name);
+  const instructor = instructorSel.value;
+  const date = dateInput.value.replace(/-/g, '/');
+  if (!instructor || !date) return;
 
-    const iCourse = idx('課程');
-    const iDate = idx('日期');
-    const iTime = idx('時間');
-    const iInstructor = idx('指導者');
+  const classes = data.filter(d =>
+    d['指導者'] === instructor && d['日期'] === date
+  );
 
-    if ([iCourse,iDate,iTime,iInstructor].some(v => v < 0)) {
-      throw new Error('CSV 欄位名找不到：請確認有「課程」「日期」「時間」「指導者」');
-    }
-
-    const items = [];
-    for (let r = 1; r < rows.length; r++){
-      const row = rows[r];
-      const course = norm(row[iCourse]);
-      const rawDate = norm(row[iDate]);
-      const time = norm(row[iTime]);
-      const instructor = norm(row[iInstructor]);
-
-      if (!course || !rawDate || !time || !instructor) continue;
-
-      const date = normalizeDateToISO(rawDate);
-      if (!date) continue;
-
-      items.push({ instructor, date, course_name: course, start_time: time });
-    }
-    return items;
-  }
-
-  const elInstructor = document.getElementById('instructor');
-  const elDate = document.getElementById('date');
-  const elList = document.getElementById('classList');
-  const elSubmit = document.getElementById('submit');
-  const elStatus = document.getElementById('status');
-  const elWebapp = document.getElementById('webapp');
-
-  let DATA = [];
-  let FILTERED = [];
-
-  function escapeHtml(s){
-    return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-  }
-
-  function renderInstructors(){
-    const names = Array.from(new Set(DATA.map(x => x.instructor)))
-      .sort((a,b)=>a.localeCompare(b,'zh-Hant'));
-    elInstructor.innerHTML = names.map(n => `<option value="${escapeHtml(n)}">${escapeHtml(n)}</option>`).join('');
-  }
-
-  function renderList(){
-    const instructor = elInstructor.value;
-    const date = elDate.value;
-    elList.innerHTML = '';
-    elStatus.textContent = '';
-
-    if (!instructor || !date) { elSubmit.disabled = true; return; }
-
-    FILTERED = DATA
-      .filter(x => x.instructor === instructor && x.date === date)
-      .sort((a,b)=>a.start_time.localeCompare(b.start_time));
-
-    if (FILTERED.length === 0) {
-      elSubmit.disabled = true;
-      elList.innerHTML = `<div class="hint">查無課堂</div>`;
-      return;
-    }
-
-    elList.innerHTML = FILTERED.map((x, i) => `
-      <div class="item">
-        <input type="checkbox" data-i="${i}">
-        <div class="meta">
-          <div class="title">${escapeHtml(x.course_name)}</div>
-          <div><span class="pill">${escapeHtml(x.start_time)}</span></div>
-        </div>
+  classes.forEach((c, i) => {
+    const div = document.createElement('div');
+    div.className = 'item';
+    div.innerHTML = `
+      <input type="checkbox" data-course="${c['課程']}" data-time="${c['時間']}">
+      <div class="meta">
+        <div class="title">${c['課程']}</div>
+        <div>${c['時間']}</div>
       </div>
-    `).join('');
+    `;
+    listEl.appendChild(div);
+  });
+}
 
-    elSubmit.disabled = false;
-  }
+/* ================== 事件 ================== */
+instructorSel.onchange = refreshList;
+dateInput.onchange = refreshList;
 
-  function getSelected(){
-    const checks = elList.querySelectorAll('input[type="checkbox"]');
-    const selected = [];
-    checks.forEach(ch => {
-      if (!ch.checked) return;
-      const i = Number(ch.getAttribute('data-i'));
-      selected.push(FILTERED[i]);
-    });
-    return selected;
-  }
-
-  async function submit(){
-    const url = (elWebapp.value || '').trim();
-    if (!url) { elStatus.textContent = 'https://script.google.com/macros/s/AKfycbyJADHe_DZdNIbfv_KPewAcBekEond-5Fw63i-RWCd1mHl_O9uGAQ-LTnzENZshjnhe/exec'; return; }
-
-    const instructor = elInstructor.value;
-    const date = elDate.value;
-    const items = getSelected();
-    if (items.length === 0) { elStatus.textContent = '請至少勾選一堂課'; return; }
-
-    elSubmit.disabled = true;
-    elStatus.textContent = '送出中…';
-
-    // ✅ 關鍵：用表單格式送出，避免 CORS preflight（OPTIONS）被 Apps Script 擋
-const form = new URLSearchParams();
-form.set('instructor', instructor);
-form.set('date', date);
-form.set('items', JSON.stringify(items.map(x => ({ course_name: x.course_name, start_time: x.start_time }))));
-
-const resp = await fetch(url, {
-  method: 'POST',
-  body: form
+listEl.addEventListener('change', () => {
+  submitBtn.disabled = !listEl.querySelector('input:checked');
 });
 
-    const json = await resp.json().catch(()=>({ok:false,error:'無法解析回應'}));
-    elStatus.textContent = json.ok
-      ? `完成：寫入 ${json.inserted} 筆（重複的會自動略過）`
-      : `失敗：${json.error || 'unknown'}`;
+/* ================== 送出 ================== */
+submitBtn.onclick = () => {
+  const items = [...listEl.querySelectorAll('input:checked')].map(cb => ({
+    course_name: cb.dataset.course,
+    start_time: cb.dataset.time
+  }));
 
-    elSubmit.disabled = false;
-  }
+  const params = new URLSearchParams({
+    instructor: instructorSel.value,
+    date: dateInput.value,
+    items: JSON.stringify(items)
+  });
 
-  (function(){
-    // 預填 URL
-    elWebapp.value = DEFAULT_WEB_APP_URL;
+  const url = webappInput.value + '?' + params.toString();
+  statusEl.textContent = '送出中…';
 
-    const rows = parseCSV(CSV_TEXT);
-    DATA = buildData(rows);
-    renderInstructors();
-
-    elInstructor.addEventListener('change', renderList);
-    elDate.addEventListener('change', renderList);
-    elSubmit.addEventListener('click', submit);
-
-    // 預先畫一次（避免空白）
-    renderList();
-  })();
+  fetch(url)
+    .then(r => r.json())
+    .then(res => {
+      statusEl.textContent = res.ok
+        ? `✅ 成功寫入 ${res.inserted} 筆`
+        : `❌ 失敗：${res.error}`;
+    })
+    .catch(err => {
+      statusEl.textContent = '❌ 連線失敗';
+      console.error(err);
+    });
+};
 </script>
+
 </body>
 </html>
