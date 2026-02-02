@@ -8,11 +8,14 @@
   
   <style>
     :root {
-      --primary-color: #0071e3;
-      --bg-color: #f5f5f7;
+      /* 調色盤：避開正黑色，改用深墨色與灰藍色 */
+      --primary-color: #546e7a;     /* 質感灰藍 */
+      --accent-color: #78909c;      /* 淺一點的灰藍 */
+      --bg-color: #f5f5f7;          /* 保留底色 */
       --card-bg: #ffffff;
-      --text-main: #1d1d1f;
-      --text-sub: #6e6e73; /* 稍微深一點的灰色，更有質感 */
+      --text-main: #2c3e50;         /* 深墨色，取代正黑 */
+      --text-sub: #7f8c8d;          /* 輔助灰色 */
+      --border-color: #e0e0e0;
       --border-radius: 18px;
     }
 
@@ -23,93 +26,85 @@
     }
 
     .header { text-align: center; padding: 40px 20px 20px; }
-    .header h1 { font-size: 24px; font-weight: 700; margin: 0; }
+    .header h1 { font-size: 24px; font-weight: 700; margin: 0; color: var(--primary-color); }
 
     .wrap { max-width: 500px; margin: 0 auto; padding: 15px; }
 
     .card { 
       background: var(--card-bg); border-radius: var(--border-radius); 
-      padding: 24px; margin-bottom: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      padding: 24px; margin-bottom: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+      border: 1px solid rgba(0,0,0,0.02);
     }
-    label { display: block; font-weight: 700; margin-bottom: 16px; font-size: 16px; color: var(--text-main); }
+    label { display: block; font-weight: 700; margin-bottom: 16px; font-size: 16px; color: var(--primary-color); }
 
+    /* 下拉選單配色 */
     select { 
       width: 100%; font-size: 16px; padding: 14px; border-radius: 12px; 
-      border: 1px solid #d2d2d7; background: #fff; outline: none; appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2386868b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      border: 1.5px solid var(--border-color); background: #fff; 
+      color: var(--text-main); outline: none; appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%237f8c8d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
       background-repeat: no-repeat; background-position: right 12px center;
     }
 
-    /* 日期網格 */
+    /* 日期網格配色 */
     .date-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(85px, 1fr)); gap: 10px; }
     .date-item { 
-      border: 1.5px solid #d2d2d7; padding: 12px 5px; border-radius: 14px; 
+      border: 1.5px solid var(--border-color); padding: 12px 5px; border-radius: 14px; 
       text-align: center; cursor: pointer; transition: 0.2s; background: #fff;
     }
-    .date-item .day-name { font-size: 11px; font-weight: 700; color: var(--primary-color); display: block; margin-bottom: 2px; }
-    .date-item .date-val { font-size: 14px; font-weight: 600; }
-    .date-item.active { background: var(--primary-color); border-color: var(--primary-color); color: #fff; }
-    .date-item.active .day-name { color: rgba(255,255,255,0.9); }
+    .date-item .day-name { font-size: 11px; font-weight: 700; color: var(--accent-color); display: block; margin-bottom: 2px; }
+    .date-item .date-val { font-size: 14px; font-weight: 600; color: var(--text-main); }
+    
+    .date-item.active { background: var(--primary-color); border-color: var(--primary-color); }
+    .date-item.active .day-name, .date-item.active .date-val { color: #fff; }
 
-    /* 課程清單 - 質感升級 */
+    /* 課程清單配色 */
     .list { display: grid; gap: 12px; }
     .item { 
       display: flex; gap: 14px; border: 1.5px solid #f2f2f2; padding: 20px; 
       border-radius: 16px; align-items: flex-start; cursor: pointer; transition: 0.2s;
     }
-    .item:hover { border-color: #d2d2d7; }
+    .item:hover { border-color: var(--accent-color); background: #fafafa; }
     .item input[type="checkbox"] { 
       width: 22px; height: 22px; accent-color: var(--primary-color); 
-      margin-top: 2px; flex-shrink: 0; cursor: pointer;
+      margin-top: 2px; flex-shrink: 0;
     }
     
-    .item-content { flex: 1; }
-    
-    /* 第一行：輔助資訊 (日期、時間) */
     .item-meta { 
-      font-size: 13px; /* 稍微小一點 */
-      color: var(--text-sub); 
-      font-weight: 500;
-      margin-bottom: 4px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      font-size: 13px; color: var(--text-sub); 
+      font-weight: 500; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;
     }
-    
-    /* 第二行：主要資訊 (課程名稱) */
     .item-title { 
-      font-size: 18px; /* 加大字體 */
-      font-weight: 700; 
-      color: var(--text-main);
-      line-height: 1.3;
+      font-size: 18px; font-weight: 700; color: var(--text-main); line-height: 1.3;
     }
 
+    /* 按鈕配色：改用深灰藍，更穩重 */
     button#submit { 
       width: 100%; font-size: 17px; font-weight: 700; padding: 18px; border-radius: 16px; 
       border: 0; background: var(--primary-color); color: #fff; cursor: pointer; 
       transition: 0.3s; margin-top: 10px;
     }
-    button#submit:disabled { background: #d2d2d7; cursor: not-allowed; }
+    button#submit:hover { background: #455a64; }
+    button#submit:disabled { background: #cfd8dc; cursor: not-allowed; }
 
-    /* 彈窗 */
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 9999; padding: 20px; }
-    .modal { background: #fff; padding: 40px 30px; border-radius: 28px; max-width: 320px; width: 100%; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
-    .modal-btn { background: #000; color: #fff; border: 0; width: 100%; padding: 14px; border-radius: 12px; font-weight: 600; cursor: pointer; margin-top: 20px; }
-    .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 8888; }
-    .loader { width: 30px; height: 30px; border: 3px solid #d2d2d7; border-top-color: var(--primary-color); border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 16px; }
-    @keyframes spin { to { transform: rotate(360deg); } }
+    /* 彈窗與加載配色 */
+    .modal { background: #fff; padding: 40px 30px; border-radius: 28px; color: var(--text-main); }
+    .modal-btn { background: var(--primary-color); color: #fff; border: 0; width: 100%; padding: 14px; border-radius: 12px; font-weight: 600; cursor: pointer; margin-top: 20px; }
+    .loader { border: 3px solid #eee; border-top-color: var(--primary-color); }
+    .loading-overlay { background: var(--bg-color); color: var(--text-sub); }
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 9999; padding: 20px; }
   </style>
 </head>
 <body>
 
-<div id="loading" class="loading-overlay"><div class="loader"></div><div style="color: #86868b;">同步雲端課表...</div></div>
+<div id="loading" class="loading-overlay"><div class="loader" style="width:30px; height:30px; border-radius:50%; animation:spin 0.8s linear infinite; margin-bottom:16px;"></div><div>同步雲端課表...</div></div>
 
 <div id="modalOverlay" class="modal-overlay">
-  <div class="modal">
+  <div class="modal" style="max-width:320px; width:100%; text-align:center; box-shadow:0 20px 40px rgba(0,0,0,0.1);">
     <span style="font-size:50px; display:block; margin-bottom:15px;">✅</span>
     <div style="font-size: 20px; font-weight: 700; margin-bottom: 10px;">申請已送出</div>
-    <div style="color: #86868b; line-height: 1.5;">請假紀錄已更新。</div>
-    <button class="modal-btn" onclick="location.reload()">確定</button>
+    <div style="color: var(--text-sub); line-height: 1.5;">請假紀錄已更新成功。</div>
+    <button class="modal-btn" onclick="location.reload()">我知道了</button>
   </div>
 </div>
 
@@ -176,8 +171,6 @@ function refreshCourseList() {
     const div = document.createElement('div');
     div.className = 'item';
     div.onclick = () => { const chk = div.querySelector('input'); chk.checked = !chk.checked; updateBtn(); };
-    
-    // 視覺強化：第一行灰色小字(日期時間)，第二行黑色大字(課程名)
     div.innerHTML = `
       <input type="checkbox" data-course="${c['課程']}" data-date="${c['日期']}" data-time="${c['時間']}" onclick="event.stopPropagation(); updateBtn();">
       <div class="item-content">
@@ -204,5 +197,6 @@ document.getElementById('submit').onclick = function() {
     .then(() => { document.getElementById('modalOverlay').style.display = 'flex'; });
 };
 </script>
+<style> @keyframes spin { to { transform: rotate(360deg); } } </style>
 </body>
 </html>
