@@ -12,18 +12,20 @@
     label { display: block; font-weight: bold; margin-bottom: 10px; font-size: 16px; }
     select, input[type="date"] { width: 100%; font-size: 16px; padding: 12px; border-radius: 8px; border: 1px solid #ddd; outline: none; }
     .list { display: grid; gap: 10px; margin-top: 10px; }
-    .item { display: flex; gap: 12px; border: 1px solid #eee; padding: 12px; border-radius: 10px; align-items: center; cursor: pointer; }
-    .item:hover { background: #f9f9f9; }
+    .item { display: flex; gap: 12px; border: 1px solid #eee; padding: 12px; border-radius: 10px; align-items: center; cursor: pointer; transition: 0.2s; }
+    .item:hover { background: #f0f7ff; border-color: #007aff; }
     .item input { width: 22px; height: 22px; cursor: pointer; }
     button { width: 100%; font-size: 18px; font-weight: bold; padding: 16px; border-radius: 10px; border: 0; background: #007aff; color: #fff; cursor: pointer; transition: 0.3s; }
     button:disabled { background: #ccc; cursor: not-allowed; }
     .status { text-align: center; margin-top: 15px; font-size: 14px; font-weight: bold; min-height: 20px; }
-    .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.8); display: flex; justify-content: center; align-items: center; z-index: 100; display: none; }
+    .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 100; }
   </style>
 </head>
 <body>
 
-<div id="loading" class="loading-overlay">⌛ 正在同步雲端課表...</div>
+<div id="loading" class="loading-overlay">
+  <div>⌛ 正在同步雲端課表...</div>
+</div>
 
 <div class="wrap">
   <div class="card">
@@ -47,7 +49,6 @@
 
 <script>
 /* ================== 配置區 ================== */
-// 這裡統一使用 APP_URL
 const APP_URL = "https://script.google.com/macros/s/AKfycbyJADHe_DZdNIbfv_KPewAcBekEond-5Fw63i-RWCd1mHl_O9uGAQ-LTnzENZshjnhe/exec"; 
 
 let rawData = [];
@@ -60,8 +61,6 @@ const loading = document.getElementById('loading');
 
 // 1. 初始化：從雲端抓取課表
 window.onload = function() {
-  loading.style.display = 'flex';
-  // 修正點：統一使用 APP_URL
   fetch(`${APP_URL}?action=getCourse`)
     .then(res => res.json())
     .then(data => {
@@ -72,7 +71,7 @@ window.onload = function() {
       loading.style.display = 'none';
     })
     .catch(err => {
-      loading.textContent = '❌ 課表同步失敗，請檢查網址或權限';
+      loading.innerHTML = '<div style="color:red;">❌ 課表同步失敗<br>請檢查網路或 API 部署設定</div>';
       console.error(err);
     });
 };
@@ -81,29 +80,35 @@ function refreshList() {
   listEl.innerHTML = '';
   submitBtn.disabled = true;
   const selIns = instructorSel.value;
-  const selDate = dateInput.value;
+  const selDate = dateInput.value; // YYYY-MM-DD
   if (!selIns || !selDate) return;
 
-  // 補零邏輯：保持 YYYY/MM/DD
+  // 準備比對用的日期格式
   const d = selDate.split('-');
-  const formattedDate = `${d[0]}/${d[1]}/${d[2]}`;
+  const dateWithZero = `${d[0]}/${d[1]}/${d[2]}`;          // 2026/02/02
+  const dateNoZero = `${d[0]}/${parseInt(d[1])}/${parseInt(d[2])}`; // 2026/2/2
 
   const classes = rawData.filter(item => {
-    // 強制轉字串並修剪空白後再比對
-    const itemDate = String(item['日期']).trim();
+    const itemDate = String(item['日期']).trim().replace(/-/g, '/');
     const itemIns = String(item['指導者']).trim();
-    return itemIns === selIns && itemDate === formattedDate;
+    // 只要指導者對，且日期符合任一格式
+    return itemIns === selIns && (itemDate === dateWithZero || itemDate === dateNoZero);
   });
 
   if (classes.length === 0) {
-    listEl.innerHTML = `<div style="color:#999; text-align:center;">此日期無您的課程<br><small>您選的是: ${formattedDate}</small></div>`;
+    listEl.innerHTML = `<div style="color:#999; text-align:center; padding:20px;">此日期無您的課程</div>`;
     return;
   }
 
   classes.forEach(c => {
     const div = document.createElement('div');
     div.className = 'item';
-    div.onclick = () => { const chk = div.querySelector('input'); chk.checked = !chk.checked; updateBtn(); };
+    div.onclick = () => {
+      const chk = div.querySelector('input');
+      chk.checked = !chk.checked;
+      div.style.backgroundColor = chk.checked ? "#eef6ff" : "#fff";
+      updateBtn();
+    };
     div.innerHTML = `
       <input type="checkbox" data-course="${c['課程']}" data-time="${c['時間']}" onclick="event.stopPropagation(); updateBtn();">
       <div>
@@ -141,12 +146,12 @@ submitBtn.onclick = () => {
   fetch(`${APP_URL}?${params.toString()}`, { mode: "no-cors" })
     .then(() => {
       statusEl.style.color = "green";
-      statusEl.textContent = '✅ 請假成功！';
-      setTimeout(() => { location.reload(); }, 2500);
+      statusEl.textContent = '✅ 請假成功！系統已更新。';
+      setTimeout(() => { location.reload(); }, 2000);
     })
     .catch(() => {
       statusEl.style.color = "red";
-      statusEl.textContent = '❌ 傳送失敗';
+      statusEl.textContent = '❌ 傳送失敗，請稍後再試';
       submitBtn.disabled = false;
     });
 };
