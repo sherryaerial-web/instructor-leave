@@ -3,25 +3,23 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>教師請假系統 | Instructor Leave</title>
+  <title>教師請假系統</title>
   <link rel="icon" href="data:;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==">
   
   <style>
     :root {
-      /* 調色盤：避開正黑色，改用深墨色與灰藍色 */
-      --primary-color: #546e7a;     /* 質感灰藍 */
-      --accent-color: #78909c;      /* 淺一點的灰藍 */
-      --bg-color: #f5f5f7;          /* 保留底色 */
+      /* 這裡調整所有色調，完全避開正黑 #000 */
+      --primary-color: #4a6572;     /* 莫蘭迪藍灰 */
+      --bg-color: #f5f5f7;          /* 背景底色 */
+      --text-main: #34495e;         /* 明顯的深灰藍 (不再是黑色) */
+      --text-sub: #7f8c8d;          /* 輔助灰 */
       --card-bg: #ffffff;
-      --text-main: #2c3e50;         /* 深墨色，取代正黑 */
-      --text-sub: #7f8c8d;          /* 輔助灰色 */
-      --border-color: #e0e0e0;
-      --border-radius: 18px;
+      --border-color: #e0e6ed;
     }
 
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
     body { 
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro TC", "Noto Sans TC", sans-serif; 
+      font-family: -apple-system, "SF Pro TC", "Noto Sans TC", sans-serif; 
       margin: 0; background: var(--bg-color); color: var(--text-main); 
     }
 
@@ -31,13 +29,11 @@
     .wrap { max-width: 500px; margin: 0 auto; padding: 15px; }
 
     .card { 
-      background: var(--card-bg); border-radius: var(--border-radius); 
-      padding: 24px; margin-bottom: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-      border: 1px solid rgba(0,0,0,0.02);
+      background: var(--card-bg); border-radius: 20px; 
+      padding: 24px; margin-bottom: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.03);
     }
     label { display: block; font-weight: 700; margin-bottom: 16px; font-size: 16px; color: var(--primary-color); }
 
-    /* 下拉選單配色 */
     select { 
       width: 100%; font-size: 16px; padding: 14px; border-radius: 12px; 
       border: 1.5px solid var(--border-color); background: #fff; 
@@ -46,65 +42,43 @@
       background-repeat: no-repeat; background-position: right 12px center;
     }
 
-    /* 日期網格配色 */
     .date-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(85px, 1fr)); gap: 10px; }
-    .date-item { 
-      border: 1.5px solid var(--border-color); padding: 12px 5px; border-radius: 14px; 
-      text-align: center; cursor: pointer; transition: 0.2s; background: #fff;
-    }
-    .date-item .day-name { font-size: 11px; font-weight: 700; color: var(--accent-color); display: block; margin-bottom: 2px; }
+    .date-item { border: 1.5px solid var(--border-color); padding: 12px 5px; border-radius: 14px; text-align: center; cursor: pointer; transition: 0.2s; background: #fff; }
+    .date-item .day-name { font-size: 11px; font-weight: 700; color: var(--primary-color); display: block; margin-bottom: 2px; }
     .date-item .date-val { font-size: 14px; font-weight: 600; color: var(--text-main); }
-    
     .date-item.active { background: var(--primary-color); border-color: var(--primary-color); }
     .date-item.active .day-name, .date-item.active .date-val { color: #fff; }
 
-    /* 課程清單配色 */
     .list { display: grid; gap: 12px; }
-    .item { 
-      display: flex; gap: 14px; border: 1.5px solid #f2f2f2; padding: 20px; 
-      border-radius: 16px; align-items: flex-start; cursor: pointer; transition: 0.2s;
-    }
-    .item:hover { border-color: var(--accent-color); background: #fafafa; }
-    .item input[type="checkbox"] { 
-      width: 22px; height: 22px; accent-color: var(--primary-color); 
-      margin-top: 2px; flex-shrink: 0;
-    }
+    .item { display: flex; gap: 14px; border: 1.5px solid #f4f7f9; padding: 20px; border-radius: 16px; align-items: flex-start; cursor: pointer; transition: 0.2s; }
+    .item:hover { border-color: var(--border-color); background: #fafbfc; }
+    .item input[type="checkbox"] { width: 22px; height: 22px; accent-color: var(--primary-color); margin-top: 2px; flex-shrink: 0; }
     
-    .item-meta { 
-      font-size: 13px; color: var(--text-sub); 
-      font-weight: 500; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;
-    }
-    .item-title { 
-      font-size: 18px; font-weight: 700; color: var(--text-main); line-height: 1.3;
-    }
+    .item-meta { font-size: 13px; color: var(--text-sub); font-weight: 500; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+    .item-title { font-size: 18px; font-weight: 700; color: var(--text-main); line-height: 1.3; }
 
-    /* 按鈕配色：改用深灰藍，更穩重 */
-    button#submit { 
-      width: 100%; font-size: 17px; font-weight: 700; padding: 18px; border-radius: 16px; 
-      border: 0; background: var(--primary-color); color: #fff; cursor: pointer; 
-      transition: 0.3s; margin-top: 10px;
-    }
-    button#submit:hover { background: #455a64; }
+    button#submit { width: 100%; font-size: 17px; font-weight: 700; padding: 18px; border-radius: 16px; border: 0; background: var(--primary-color); color: #fff; cursor: pointer; transition: 0.3s; margin-top: 10px; }
     button#submit:disabled { background: #cfd8dc; cursor: not-allowed; }
 
-    /* 彈窗與加載配色 */
-    .modal { background: #fff; padding: 40px 30px; border-radius: 28px; color: var(--text-main); }
-    .modal-btn { background: var(--primary-color); color: #fff; border: 0; width: 100%; padding: 14px; border-radius: 12px; font-weight: 600; cursor: pointer; margin-top: 20px; }
-    .loader { border: 3px solid #eee; border-top-color: var(--primary-color); }
-    .loading-overlay { background: var(--bg-color); color: var(--text-sub); }
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 9999; padding: 20px; }
+    .modal { background: #fff; padding: 40px 30px; border-radius: 28px; max-width: 320px; width: 100%; text-align: center; }
+    .modal-btn { background: var(--primary-color); color: #fff; border: 0; width: 100%; padding: 14px; border-radius: 12px; font-weight: 600; cursor: pointer; margin-top: 20px; }
+    .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 8888; color: var(--text-sub); }
   </style>
 </head>
 <body>
 
-<div id="loading" class="loading-overlay"><div class="loader" style="width:30px; height:30px; border-radius:50%; animation:spin 0.8s linear infinite; margin-bottom:16px;"></div><div>同步雲端課表...</div></div>
+<div id="loading" class="loading-overlay">
+  <div style="width:30px; height:30px; border:3px solid #eee; border-top-color:var(--primary-color); border-radius:50%; animation:spin 0.8s linear infinite; margin-bottom:16px;"></div>
+  <div>資料載入中...</div>
+</div>
 
 <div id="modalOverlay" class="modal-overlay">
-  <div class="modal" style="max-width:320px; width:100%; text-align:center; box-shadow:0 20px 40px rgba(0,0,0,0.1);">
+  <div class="modal">
     <span style="font-size:50px; display:block; margin-bottom:15px;">✅</span>
-    <div style="font-size: 20px; font-weight: 700; margin-bottom: 10px;">申請已送出</div>
-    <div style="color: var(--text-sub); line-height: 1.5;">請假紀錄已更新成功。</div>
-    <button class="modal-btn" onclick="location.reload()">我知道了</button>
+    <div style="font-size: 20px; font-weight: 700; margin-bottom: 10px; color: var(--text-main);">申請已送出</div>
+    <div style="color: var(--text-sub); line-height: 1.5;">請假紀錄已更新。</div>
+    <button class="modal-btn" onclick="location.reload()">確定</button>
   </div>
 </div>
 
@@ -118,6 +92,7 @@
 </div>
 
 <script>
+// (JS 部分與之前相同，僅確保 APP_URL 正確)
 const APP_URL = "https://script.google.com/macros/s/AKfycbyJADHe_DZdNIbfv_KPewAcBekEond-5Fw63i-RWCd1mHl_O9uGAQ-LTnzENZshjnhe/exec"; 
 let rawData = [];
 let selectedDates = new Set();
@@ -135,7 +110,7 @@ window.onload = function() {
     .then(data => {
       rawData = data;
       const names = [...new Set(data.map(d => d['指導者']).filter(n => n && n !== "指導者"))].sort();
-      document.getElementById('instructor').innerHTML = '<option value="">請點擊選擇姓名</option>' + 
+      document.getElementById('instructor').innerHTML = '<option value="">請點擊選擇</option>' + 
         names.map(n => `<option value="${n}">${n}</option>`).join('');
       document.getElementById('loading').style.display = 'none';
     });
@@ -166,7 +141,6 @@ function refreshCourseList() {
   if (selectedDates.size === 0) { document.getElementById('courseCard').style.display = 'none'; document.getElementById('submit').disabled = true; return; }
   document.getElementById('courseCard').style.display = 'block';
   const classes = rawData.filter(item => item['指導者'] === document.getElementById('instructor').value && selectedDates.has(item['日期']));
-  
   classes.forEach(c => {
     const div = document.createElement('div');
     div.className = 'item';
@@ -174,10 +148,7 @@ function refreshCourseList() {
     div.innerHTML = `
       <input type="checkbox" data-course="${c['課程']}" data-date="${c['日期']}" data-time="${c['時間']}" onclick="event.stopPropagation(); updateBtn();">
       <div class="item-content">
-        <div class="item-meta">
-          <span>📅 ${c['日期']} (${getDayName(c['日期'])})</span>
-          <span>🕒 ${c['時間']}</span>
-        </div>
+        <div class="item-meta"><span>📅 ${c['日期']} (${getDayName(c['日期'])})</span><span>🕒 ${c['時間']}</span></div>
         <div class="item-title">${c['課程']}</div>
       </div>`;
     listEl.appendChild(div);
