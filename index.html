@@ -4,17 +4,18 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>雲端同步請假系統</title>
+  <link rel="icon" href="data:;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==">
   <style>
     * { box-sizing: border-box; }
     body { font-family: -apple-system, "Noto Sans TC", Arial, sans-serif; margin: 0; background: #f4f7f9; color: #333; }
     .wrap { max-width: 600px; margin: 0 auto; padding: 20px; padding-bottom: 60px; }
-    .card { background: #fff; border-radius: 16px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 16px; position: relative; }
+    .card { background: #fff; border-radius: 16px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 16px; }
     label { display: block; font-weight: bold; margin-bottom: 12px; font-size: 16px; color: #444; }
     select { width: 100%; font-size: 16px; padding: 12px; border-radius: 8px; border: 1px solid #ddd; background: #fff; outline: none; }
     
     /* 日期網格 */
     .date-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px; }
-    .date-item { border: 1px solid #ddd; padding: 12px 8px; border-radius: 10px; text-align: center; cursor: pointer; background: #fff; transition: 0.2s; font-size: 14px; font-weight: 500; }
+    .date-item { border: 1px solid #ddd; padding: 12px 8px; border-radius: 10px; text-align: center; cursor: pointer; background: #fff; transition: 0.2s; font-size: 14px; }
     .date-item.active { background: #007aff; color: #fff; border-color: #007aff; box-shadow: 0 4px 8px rgba(0,122,255,0.3); }
     
     /* 課程清單 */
@@ -25,53 +26,39 @@
     button#submit { width: 100%; font-size: 18px; font-weight: bold; padding: 18px; border-radius: 12px; border: 0; background: #007aff; color: #fff; cursor: pointer; transition: 0.3s; margin-top: 10px; }
     button#submit:disabled { background: #ccc; cursor: not-allowed; }
 
-    /* === 強化版彈跳視窗 === */
+    /* === 強化彈跳視窗 === */
     .modal-overlay { 
       position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-      background: rgba(0,0,0,0.7); /* 背景變暗 */
-      display: none; /* 預設隱藏 */
-      justify-content: center; align-items: center; 
-      z-index: 9999; /* 絕對置頂 */
-      padding: 20px;
+      background: rgba(0,0,0,0.7); display: none; /* 初始隱藏 */
+      justify-content: center; align-items: center; z-index: 9999; padding: 20px;
     }
     .modal { 
-      background: #fff; padding: 40px 30px; border-radius: 24px; 
+      background: #fff; padding: 35px 25px; border-radius: 24px; 
       max-width: 350px; width: 100%; text-align: center; 
-      box-shadow: 0 20px 40px rgba(0,0,0,0.3); 
-      animation: bounceIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4); 
+      animation: pop 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     }
-    @keyframes bounceIn {
-      from { transform: scale(0.5); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-    .modal-icon { font-size: 60px; margin-bottom: 20px; display: block; }
-    .modal-title { font-size: 22px; font-weight: bold; margin-bottom: 10px; color: #1d1d1f; }
-    .modal-text { color: #666; margin-bottom: 30px; line-height: 1.5; }
+    @keyframes pop { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .modal-icon { font-size: 50px; margin-bottom: 15px; display: block; }
+    .modal-title { font-size: 20px; font-weight: bold; margin-bottom: 10px; }
     .modal-btn { 
       background: #007aff; color: #fff; border: 0; width: 100%;
-      padding: 14px; border-radius: 12px; font-weight: bold; 
-      cursor: pointer; font-size: 16px; transition: 0.2s;
+      padding: 14px; border-radius: 12px; font-weight: bold; cursor: pointer; margin-top: 20px;
     }
-    .modal-btn:hover { background: #0063cc; }
 
-    .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 8888; }
-    .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #007aff; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 10px; }
-    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; display: flex; justify-content: center; align-items: center; z-index: 8888; }
   </style>
 </head>
 <body>
 
-<div id="loading" class="loading-overlay">
-  <div class="spinner"></div>
-  <div>正在同步雲端課表...</div>
-</div>
+<div id="loading" class="loading-overlay">⌛ 正在載入雲端課表...</div>
 
 <div id="modalOverlay" class="modal-overlay">
   <div class="modal">
-    <span class="modal-icon">🎉</span>
-    <div class="modal-title">請假申請成功</div>
-    <div class="modal-text">資料已成功送出！<br>點擊下方按鈕返回。</div>
-    <button class="modal-btn" onclick="location.reload()">太棒了，確定</button>
+    <span class="modal-icon">✅</span>
+    <div class="modal-title">請假成功！</div>
+    <div style="color:#666; margin-bottom:20px;">資料已成功存入 responses 試算表。</div>
+    <button class="modal-btn" onclick="location.reload()">我知道了</button>
   </div>
 </div>
 
@@ -114,20 +101,15 @@ window.onload = function() {
         names.map(n => `<option value="${n}">${n}</option>`).join('');
       loading.style.display = 'none';
     })
-    .catch(err => {
-      loading.innerHTML = '<div style="color:red; text-align:center;">❌ 讀取失敗，請確認 API 設定</div>';
-    });
+    .catch(err => { loading.innerHTML = '❌ 同步失敗，請確認 GAS 權限'; });
 };
 
 instructorSel.onchange = function() {
-  selectedDates.clear();
-  listEl.innerHTML = '';
-  courseCard.style.display = 'none';
-  submitBtn.disabled = true;
+  selectedDates.clear(); refreshCourseList();
   const selIns = instructorSel.value;
   if (!selIns) { dateGrid.innerHTML = ''; return; }
-  const availableDates = [...new Set(rawData.filter(d => d['指導者'] === selIns).map(d => d['日期']))].sort();
-  dateGrid.innerHTML = availableDates.map(date => `<div class="date-item" onclick="toggleDate(this, '${date}')">${date}</div>`).join('');
+  const dates = [...new Set(rawData.filter(d => d['指導者'] === selIns).map(d => d['日期']))].sort();
+  dateGrid.innerHTML = dates.map(d => `<div class="date-item" onclick="toggleDate(this, '${d}')">${d}</div>`).join('');
 };
 
 function toggleDate(el, date) {
@@ -140,55 +122,31 @@ function refreshCourseList() {
   listEl.innerHTML = '';
   if (selectedDates.size === 0) { courseCard.style.display = 'none'; submitBtn.disabled = true; return; }
   courseCard.style.display = 'block';
-  const selIns = instructorSel.value;
-  const classes = rawData.filter(item => item['指導者'] === selIns && selectedDates.has(item['日期']));
+  const classes = rawData.filter(item => item['指導者'] === instructorSel.value && selectedDates.has(item['日期']));
   classes.forEach(c => {
     const div = document.createElement('div');
     div.className = 'item';
     div.onclick = () => { const chk = div.querySelector('input'); chk.checked = !chk.checked; updateBtn(); };
-    div.innerHTML = `
-      <input type="checkbox" data-course="${c['課程']}" data-date="${c['日期']}" data-time="${c['時間']}" onclick="event.stopPropagation(); updateBtn();">
-      <div style="flex:1;">
-        <div style="font-size:11px; color:#007aff; font-weight:bold;">${c['日期']}</div>
-        <div style="font-weight:bold; font-size:16px;">${c['課程']}</div>
-        <div style="font-size:14px; color:#666;">🕒 ${c['時間']}</div>
-      </div>
-    `;
+    div.innerHTML = `<input type="checkbox" data-course="${c['課程']}" data-date="${c['日期']}" data-time="${c['時間']}" onclick="event.stopPropagation(); updateBtn();">
+      <div style="flex:1;"><div style="font-size:11px; color:#007aff; font-weight:bold;">${c['日期']}</div>
+      <div style="font-weight:bold;">${c['課程']}</div><div style="font-size:14px; color:#666;">🕒 ${c['時間']}</div></div>`;
     listEl.appendChild(div);
   });
   updateBtn();
 }
 
-function updateBtn() {
-  submitBtn.disabled = !listEl.querySelector('input:checked');
-}
+function updateBtn() { submitBtn.disabled = !listEl.querySelector('input:checked'); }
 
 submitBtn.onclick = () => {
-  submitBtn.disabled = true;
-  submitBtn.textContent = '🚀 正在同步至雲端...';
-  
-  const selectedItems = [...listEl.querySelectorAll('input:checked')].map(cb => ({
-    course_name: cb.dataset.course,
-    start_time: cb.dataset.time,
-    date: cb.dataset.date
+  submitBtn.disabled = true; submitBtn.textContent = '🚀 送出中...';
+  const items = [...listEl.querySelectorAll('input:checked')].map(cb => ({
+    course_name: cb.dataset.course, start_time: cb.dataset.time, date: cb.dataset.date
   }));
+  const params = new URLSearchParams({ instructor: instructorSel.value, items: JSON.stringify(items) });
 
-  const params = new URLSearchParams({
-    instructor: instructorSel.value,
-    items: JSON.stringify(selectedItems)
-  });
-
-  // 執行 fetch
   fetch(`${APP_URL}?${params.toString()}`, { mode: "no-cors" })
-    .then(() => {
-      // 關鍵修正：確保顯示彈跳視窗並設為 flex
-      modalOverlay.style.display = 'flex';
-      submitBtn.textContent = '確認送出請假申請';
-    })
-    .catch(() => {
-      alert("網路異常，請重試");
-      submitBtn.disabled = false;
-    });
+    .then(() => { modalOverlay.style.display = 'flex'; })
+    .catch(() => { alert("連線失敗"); submitBtn.disabled = false; });
 };
 </script>
 </body>
