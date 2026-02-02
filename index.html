@@ -47,7 +47,7 @@
 
 <script>
 /* ================== 配置區 ================== */
-const WEB_APP_URL = "填入你的API網址"; 
+const APP_URL = "https://script.google.com/macros/s/AKfycbyJADHe_DZdNIbfv_KPewAcBekEond-5Fw63i-RWCd1mHl_O9uGAQ-LTnzENZshjnhe/exec"; 
 
 let rawData = [];
 const instructorSel = document.getElementById('instructor');
@@ -132,7 +132,7 @@ submitBtn.onclick = () => {
     items: JSON.stringify(selected)
   });
 
-  fetch(`${WEB_APP_URL}?${params.toString()}`, { mode: "no-cors" })
+  fetch(`${APP_URL}?${params.toString()}`, { mode: "no-cors" })
     .then(() => {
       statusEl.style.color = "green";
       statusEl.textContent = '✅ 請假成功！系統已自動去重與排序。';
