@@ -47,6 +47,7 @@
 
 <script>
 /* ================== 配置區 ================== */
+// 這裡統一使用 APP_URL
 const APP_URL = "https://script.google.com/macros/s/AKfycbyJADHe_DZdNIbfv_KPewAcBekEond-5Fw63i-RWCd1mHl_O9uGAQ-LTnzENZshjnhe/exec"; 
 
 let rawData = [];
@@ -60,6 +61,7 @@ const loading = document.getElementById('loading');
 // 1. 初始化：從雲端抓取課表
 window.onload = function() {
   loading.style.display = 'flex';
+  // 修正點：統一使用 APP_URL
   fetch(`${APP_URL}?action=getCourse`)
     .then(res => res.json())
     .then(data => {
@@ -79,24 +81,22 @@ function refreshList() {
   listEl.innerHTML = '';
   submitBtn.disabled = true;
   const selIns = instructorSel.value;
-  const selDate = dateInput.value; // HTML5 date input 格式永遠是 YYYY-MM-DD
+  const selDate = dateInput.value;
   if (!selIns || !selDate) return;
 
-  // 修正處：將日期格式化為 YYYY/MM/DD (強迫補零)
+  // 補零邏輯：保持 YYYY/MM/DD
   const d = selDate.split('-');
   const formattedDate = `${d[0]}/${d[1]}/${d[2]}`;
 
-  console.log("正在比對日期:", formattedDate); // 偵錯用
-
   const classes = rawData.filter(item => {
-    // 這裡我們把比較雙方都 trim() 一下，避免空白字元搗亂
-    const itemDate = (item['日期'] || "").trim();
-    const itemIns = (item['指導者'] || "").trim();
+    // 強制轉字串並修剪空白後再比對
+    const itemDate = String(item['日期']).trim();
+    const itemIns = String(item['指導者']).trim();
     return itemIns === selIns && itemDate === formattedDate;
   });
 
   if (classes.length === 0) {
-    listEl.innerHTML = '<div style="color:#999; text-align:center;">此日期無您的課程<br><small>(試算表日期需為: ' + formattedDate + ')</small></div>';
+    listEl.innerHTML = `<div style="color:#999; text-align:center;">此日期無您的課程<br><small>您選的是: ${formattedDate}</small></div>`;
     return;
   }
 
@@ -141,12 +141,12 @@ submitBtn.onclick = () => {
   fetch(`${APP_URL}?${params.toString()}`, { mode: "no-cors" })
     .then(() => {
       statusEl.style.color = "green";
-      statusEl.textContent = '✅ 請假成功！系統已自動去重。';
+      statusEl.textContent = '✅ 請假成功！';
       setTimeout(() => { location.reload(); }, 2500);
     })
     .catch(() => {
       statusEl.style.color = "red";
-      statusEl.textContent = '❌ 傳送失敗，請重試';
+      statusEl.textContent = '❌ 傳送失敗';
       submitBtn.disabled = false;
     });
 };
