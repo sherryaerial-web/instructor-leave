@@ -3,42 +3,58 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>雲端同步請假系統</title>
+  <title>雲端同步請假系統 - 多選版</title>
   <style>
     * { box-sizing: border-box; }
-    body { font-family: -apple-system, "Noto Sans TC", Arial; margin: 0; background: #f4f7f9; color: #333; }
+    body { font-family: -apple-system, "Noto Sans TC", Arial, sans-serif; margin: 0; background: #f4f7f9; color: #333; line-height: 1.5; }
     .wrap { max-width: 600px; margin: 0 auto; padding: 20px; }
     .card { background: #fff; border-radius: 16px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 16px; }
-    label { display: block; font-weight: bold; margin-bottom: 10px; font-size: 16px; }
-    select, input[type="date"] { width: 100%; font-size: 16px; padding: 12px; border-radius: 8px; border: 1px solid #ddd; outline: none; }
+    label { display: block; font-weight: bold; margin-bottom: 12px; font-size: 16px; color: #444; }
+    select { width: 100%; font-size: 16px; padding: 12px; border-radius: 8px; border: 1px solid #ddd; background: #fff; outline: none; }
+    
+    /* 日期按鈕網格 */
+    .date-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px; }
+    .date-item { border: 1px solid #ddd; padding: 12px 8px; border-radius: 10px; text-align: center; cursor: pointer; background: #fff; transition: all 0.2s; font-size: 14px; font-weight: 500; }
+    .date-item:hover { background: #f0f7ff; border-color: #007aff; }
+    .date-item.active { background: #007aff; color: #fff; border-color: #007aff; box-shadow: 0 4px 8px rgba(0,122,255,0.3); }
+    
+    /* 課程清單 */
     .list { display: grid; gap: 10px; margin-top: 10px; }
-    .item { display: flex; gap: 12px; border: 1px solid #eee; padding: 12px; border-radius: 10px; align-items: center; cursor: pointer; }
-    .item:hover { background: #f0f7ff; }
-    .item input { width: 22px; height: 22px; cursor: pointer; }
-    button { width: 100%; font-size: 18px; font-weight: bold; padding: 16px; border-radius: 10px; border: 0; background: #007aff; color: #fff; cursor: pointer; }
-    button:disabled { background: #ccc; }
-    .status { text-align: center; margin-top: 15px; font-size: 14px; font-weight: bold; }
-    .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); display: flex; justify-content: center; align-items: center; z-index: 100; }
+    .item { display: flex; gap: 12px; border: 1px solid #eee; padding: 15px; border-radius: 12px; align-items: center; cursor: pointer; background: #fff; transition: 0.2s; }
+    .item:hover { border-color: #007aff; background: #f9fcff; }
+    .item input { width: 20px; height: 20px; cursor: pointer; flex-shrink: 0; }
+    .item-info { flex-grow: 1; }
+    .item-date-tag { font-size: 11px; font-weight: bold; color: #007aff; text-transform: uppercase; margin-bottom: 2px; }
+    
+    button#submit { width: 100%; font-size: 18px; font-weight: bold; padding: 18px; border-radius: 12px; border: 0; background: #007aff; color: #fff; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+    button#submit:disabled { background: #ccc; cursor: not-allowed; transform: none; }
+    button#submit:active { transform: scale(0.98); }
+    
+    .status { text-align: center; margin-top: 15px; font-size: 14px; font-weight: bold; min-height: 24px; }
+    .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 100; }
   </style>
 </head>
 <body>
 
-<div id="loading" class="loading-overlay">⌛ 正在同步雲端課表...</div>
+<div id="loading" class="loading-overlay"><div>⌛ 正在同步雲端課表...</div></div>
 
 <div class="wrap">
   <div class="card">
     <label>1. 選擇指導者</label>
     <select id="instructor"><option value="">讀取中...</option></select>
   </div>
+
   <div class="card">
-    <label>2. 選擇請假日期</label>
-    <input id="date" type="date" />
+    <label>2. 選擇請假日期 (可多選)</label>
+    <div id="dateGrid" class="date-grid"></div>
   </div>
-  <div class="card">
-    <label>3. 勾選課堂</label>
+
+  <div id="courseCard" class="card" style="display:none;">
+    <label>3. 勾選欲請假的課堂</label>
     <div id="classList" class="list"></div>
   </div>
-  <button id="submit" disabled>確認送出</button>
+
+  <button id="submit" disabled>確認送出請假申請</button>
   <div id="status" class="status"></div>
 </div>
 
@@ -46,83 +62,130 @@
 const APP_URL = "https://script.google.com/macros/s/AKfycbyJADHe_DZdNIbfv_KPewAcBekEond-5Fw63i-RWCd1mHl_O9uGAQ-LTnzENZshjnhe/exec"; 
 
 let rawData = [];
+let selectedDates = new Set();
 const instructorSel = document.getElementById('instructor');
-const dateInput = document.getElementById('date');
+const dateGrid = document.getElementById('dateGrid');
 const listEl = document.getElementById('classList');
+const courseCard = document.getElementById('courseCard');
 const submitBtn = document.getElementById('submit');
 const statusEl = document.getElementById('status');
 const loading = document.getElementById('loading');
 
+// 1. 初始化抓取資料
 window.onload = function() {
   fetch(`${APP_URL}?action=getCourse`)
     .then(res => res.json())
     .then(data => {
       rawData = data;
-      // 修正：去除空白與重複的指導者名稱
       const names = [...new Set(data.map(d => d['指導者']).filter(n => n && n !== "指導者"))].sort();
       instructorSel.innerHTML = '<option value="">請選擇指導者</option>' + 
         names.map(n => `<option value="${n}">${n}</option>`).join('');
       loading.style.display = 'none';
     })
     .catch(err => {
-      loading.textContent = '❌ 同步失敗，請檢查網路';
+      loading.innerHTML = '<div style="color:red;">❌ 同步失敗，請重新整理網頁</div>';
     });
 };
 
-function refreshList() {
+// 選擇指導者後生成日期按鈕
+instructorSel.onchange = function() {
+  selectedDates.clear();
   listEl.innerHTML = '';
+  courseCard.style.display = 'none';
   submitBtn.disabled = true;
+  
   const selIns = instructorSel.value;
-  const selDate = dateInput.value;
-  if (!selIns || !selDate) return;
+  if (!selIns) { dateGrid.innerHTML = ''; return; }
 
-  const d = selDate.split('-');
-  const targetDate = `${d[0]}/${d[1]}/${d[2]}`; // YYYY/MM/DD
+  const availableDates = [...new Set(rawData.filter(d => d['指導者'] === selIns).map(d => d['日期']))].sort();
+  
+  if (availableDates.length === 0) {
+    dateGrid.innerHTML = '<div style="color:#999; font-size:14px;">此老師目前無排課資料</div>';
+  } else {
+    dateGrid.innerHTML = availableDates.map(date => 
+      `<div class="date-item" onclick="toggleDate(this, '${date}')">${date}</div>`
+    ).join('');
+  }
+};
 
-  const classes = rawData.filter(item => item['指導者'] === selIns && item['日期'] === targetDate);
+function toggleDate(el, date) {
+  if (selectedDates.has(date)) {
+    selectedDates.delete(date);
+    el.classList.remove('active');
+  } else {
+    selectedDates.add(date);
+    el.classList.add('active');
+  }
+  refreshCourseList();
+}
 
-  if (classes.length === 0) {
-    listEl.innerHTML = '<div style="color:#999; text-align:center;">此日期無您的課程</div>';
+function refreshCourseList() {
+  listEl.innerHTML = '';
+  if (selectedDates.size === 0) {
+    courseCard.style.display = 'none';
+    submitBtn.disabled = true;
     return;
   }
+
+  courseCard.style.display = 'block';
+  const selIns = instructorSel.value;
+  
+  // 過濾出所有選中日期的課程
+  const classes = rawData.filter(item => 
+    item['指導者'] === selIns && selectedDates.has(item['日期'])
+  );
 
   classes.forEach(c => {
     const div = document.createElement('div');
     div.className = 'item';
-    div.onclick = () => { const chk = div.querySelector('input'); chk.checked = !chk.checked; updateBtn(); };
+    div.onclick = () => { 
+      const chk = div.querySelector('input'); 
+      chk.checked = !chk.checked; 
+      updateBtn(); 
+    };
     div.innerHTML = `
-      <input type="checkbox" data-course="${c['課程']}" data-time="${c['時間']}" onclick="event.stopPropagation(); updateBtn();">
-      <div>
-        <div style="font-weight:bold;">${c['課程']}</div>
-        <div style="font-size:14px; color:#666;">時間：${c['時間']}</div>
+      <input type="checkbox" data-course="${c['課程']}" data-date="${c['日期']}" data-time="${c['時間']}" onclick="event.stopPropagation(); updateBtn();">
+      <div class="item-info">
+        <div class="item-date-tag">${c['日期']}</div>
+        <div style="font-weight:bold; font-size:16px;">${c['課程']}</div>
+        <div style="font-size:14px; color:#666;">🕒 ${c['時間']}</div>
       </div>
     `;
     listEl.appendChild(div);
   });
+  updateBtn();
 }
 
 function updateBtn() {
-  submitBtn.disabled = !listEl.querySelector('input:checked');
+  const hasChecked = !!listEl.querySelector('input:checked');
+  submitBtn.disabled = !hasChecked;
 }
-
-instructorSel.onchange = refreshList;
-dateInput.onchange = refreshList;
 
 submitBtn.onclick = () => {
   submitBtn.disabled = true;
-  statusEl.textContent = '🚀 正在送出...';
-  const selected = [...listEl.querySelectorAll('input:checked')].map(cb => ({
+  statusEl.style.color = "#007aff";
+  statusEl.textContent = '🚀 正在送出請假資料...';
+  
+  const selectedItems = [...listEl.querySelectorAll('input:checked')].map(cb => ({
     course_name: cb.dataset.course,
-    start_time: cb.dataset.time
+    start_time: cb.dataset.time,
+    date: cb.dataset.date
   }));
 
-  fetch(`${APP_URL}?instructor=${instructorSel.value}&date=${dateInput.value}&items=${JSON.stringify(selected)}`, { mode: "no-cors" })
+  const params = new URLSearchParams({
+    instructor: instructorSel.value,
+    items: JSON.stringify(selectedItems)
+  });
+
+  fetch(`${APP_URL}?${params.toString()}`, { mode: "no-cors" })
     .then(() => {
-      statusEl.textContent = '✅ 請假成功！';
+      statusEl.style.color = "green";
+      statusEl.textContent = '✅ 請假成功！系統已更新紀錄。';
       setTimeout(() => { location.reload(); }, 2000);
     })
     .catch(() => {
-      statusEl.textContent = '❌ 失敗';
+      statusEl.style.color = "red";
+      statusEl.textContent = '❌ 送出失敗，請檢查網路';
       submitBtn.disabled = false;
     });
 };
