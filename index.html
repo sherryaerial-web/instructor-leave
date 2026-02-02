@@ -7,27 +7,50 @@
   <style>
     * { box-sizing: border-box; }
     body { font-family: -apple-system, "Noto Sans TC", Arial, sans-serif; margin: 0; background: #f4f7f9; color: #333; }
-    .wrap { max-width: 600px; margin: 0 auto; padding: 20px; }
+    .wrap { max-width: 600px; margin: 0 auto; padding: 20px; padding-bottom: 60px; }
     .card { background: #fff; border-radius: 16px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 16px; }
     label { display: block; font-weight: bold; margin-bottom: 12px; font-size: 16px; color: #444; }
     select { width: 100%; font-size: 16px; padding: 12px; border-radius: 8px; border: 1px solid #ddd; background: #fff; outline: none; }
+    
+    /* 日期網格 */
     .date-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px; }
     .date-item { border: 1px solid #ddd; padding: 12px 8px; border-radius: 10px; text-align: center; cursor: pointer; background: #fff; transition: 0.2s; font-size: 14px; font-weight: 500; }
-    .date-item:hover { background: #f0f7ff; border-color: #007aff; }
     .date-item.active { background: #007aff; color: #fff; border-color: #007aff; box-shadow: 0 4px 8px rgba(0,122,255,0.3); }
+    
+    /* 課程清單 */
     .list { display: grid; gap: 10px; margin-top: 10px; }
     .item { display: flex; gap: 12px; border: 1px solid #eee; padding: 15px; border-radius: 12px; align-items: center; cursor: pointer; background: #fff; }
     .item:hover { border-color: #007aff; background: #f9fcff; }
     .item input { width: 22px; height: 22px; cursor: pointer; }
+    
+    /* 送出按鈕 */
     button#submit { width: 100%; font-size: 18px; font-weight: bold; padding: 18px; border-radius: 12px; border: 0; background: #007aff; color: #fff; cursor: pointer; transition: 0.3s; margin-top: 10px; }
     button#submit:disabled { background: #ccc; cursor: not-allowed; }
-    .status { text-align: center; margin-top: 15px; font-size: 14px; font-weight: bold; min-height: 24px; }
+
+    /* 彈跳視窗 Modal 樣式 */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px; }
+    .modal { background: #fff; padding: 30px; border-radius: 20px; max-width: 400px; width: 100%; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.2); animation: scaleUp 0.3s ease-out; }
+    @keyframes scaleUp { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .modal-icon { font-size: 50px; color: #28a745; margin-bottom: 15px; }
+    .modal-title { font-size: 20px; font-weight: bold; margin-bottom: 10px; }
+    .modal-text { color: #666; margin-bottom: 25px; }
+    .modal-btn { background: #007aff; color: #fff; border: 0; padding: 12px 40px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px; }
+
     .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); display: flex; justify-content: center; align-items: center; z-index: 100; }
   </style>
 </head>
 <body>
 
 <div id="loading" class="loading-overlay">⌛ 正在同步雲端課表...</div>
+
+<div id="modalOverlay" class="modal-overlay">
+  <div class="modal">
+    <div class="modal-icon">✅</div>
+    <div class="modal-title">提交成功</div>
+    <div id="modalMsg" class="modal-text">您的請假申請已成功同步至雲端。</div>
+    <button class="modal-btn" onclick="location.reload()">確定</button>
+  </div>
+</div>
 
 <div class="wrap">
   <div class="card">
@@ -42,8 +65,7 @@
     <label>3. 勾選欲請假的課堂</label>
     <div id="classList" class="list"></div>
   </div>
-  <button id="submit" disabled>確認送出</button>
-  <div id="status" class="status"></div>
+  <button id="submit" disabled>確認送出請假申請</button>
 </div>
 
 <script>
@@ -56,16 +78,13 @@ const dateGrid = document.getElementById('dateGrid');
 const listEl = document.getElementById('classList');
 const courseCard = document.getElementById('courseCard');
 const submitBtn = document.getElementById('submit');
-const statusEl = document.getElementById('status');
 const loading = document.getElementById('loading');
+const modalOverlay = document.getElementById('modalOverlay');
 
-// 1. 初始化抓取資料 (加入緩存控制以防 CORS 錯誤)
+// 1. 初始化抓取資料
 window.onload = function() {
   fetch(`${APP_URL}?action=getCourse`, { redirect: 'follow' })
-    .then(res => {
-      if (!res.ok) throw new Error('API 無法連結');
-      return res.json();
-    })
+    .then(res => res.json())
     .then(data => {
       rawData = data;
       const names = [...new Set(data.map(d => d['指導者']).filter(n => n && n !== "指導者"))].sort();
@@ -74,8 +93,7 @@ window.onload = function() {
       loading.style.display = 'none';
     })
     .catch(err => {
-      loading.innerHTML = '<div style="color:red; text-align:center;">❌ 讀取失敗<br><small>請確認 GAS 已部署為「新版本」與「所有人」</small></div>';
-      console.error(err);
+      loading.innerHTML = '<div style="color:red; text-align:center;">❌ 讀取失敗，請重新整理</div>';
     });
 };
 
@@ -87,7 +105,6 @@ instructorSel.onchange = function() {
   const selIns = instructorSel.value;
   if (!selIns) { dateGrid.innerHTML = ''; return; }
 
-  // 自動抓取該指導者有課的所有日期
   const availableDates = [...new Set(rawData.filter(d => d['指導者'] === selIns).map(d => d['日期']))].sort();
   dateGrid.innerHTML = availableDates.map(date => 
     `<div class="date-item" onclick="toggleDate(this, '${date}')">${date}</div>`
@@ -139,8 +156,7 @@ function updateBtn() {
 
 submitBtn.onclick = () => {
   submitBtn.disabled = true;
-  statusEl.style.color = "#007aff";
-  statusEl.textContent = '🚀 正在送出請假資料...';
+  submitBtn.textContent = '🚀 處理中...';
   
   const selectedItems = [...listEl.querySelectorAll('input:checked')].map(cb => ({
     course_name: cb.dataset.course,
@@ -155,14 +171,13 @@ submitBtn.onclick = () => {
 
   fetch(`${APP_URL}?${params.toString()}`, { mode: "no-cors" })
     .then(() => {
-      statusEl.style.color = "green";
-      statusEl.textContent = '✅ 請假成功！系統已更新。';
-      setTimeout(() => { location.reload(); }, 2000);
+      // 顯示成功彈跳視窗
+      modalOverlay.style.display = 'flex';
     })
     .catch(() => {
-      statusEl.style.color = "red";
-      statusEl.textContent = '❌ 傳送失敗，請重試';
+      alert("送出失敗，請檢查網路連線。");
       submitBtn.disabled = false;
+      submitBtn.textContent = '確認送出請假申請';
     });
 };
 </script>
