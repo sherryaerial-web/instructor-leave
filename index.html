@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Sherry Aerial 指導者請假系統 | Instructor Leave</title>
+  <title>教師請假系統 | Instructor Leave</title>
   <link rel="icon" href="data:;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==">
   
   <style>
@@ -19,7 +19,7 @@
 
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
     body { 
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro TC", "SF Pro Display", "Noto Sans TC", sans-serif; 
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro TC", "Noto Sans TC", sans-serif; 
       margin: 0; background: var(--bg-color); color: var(--text-main); 
     }
 
@@ -58,17 +58,19 @@
     }
     .date-item.active .day-name, .date-item.active .date-val { color: #fff; }
 
-    /* 課程清單 */
+    /* 課程清單優化 */
     .list { display: grid; gap: 12px; }
     .item { 
-      display: flex; gap: 16px; border: 1.5px solid #f2f2f2; padding: 16px; 
-      border-radius: 14px; align-items: center; cursor: pointer; transition: 0.2s;
+      display: flex; gap: 16px; border: 1.5px solid #f2f2f2; padding: 18px; 
+      border-radius: 14px; align-items: flex-start; cursor: pointer; transition: 0.2s;
     }
-    .item:hover { border-color: var(--primary-color); }
-    .item input[type="checkbox"] { width: 22px; height: 22px; accent-color: var(--primary-color); }
-    .item-tag { font-size: 11px; font-weight: 700; color: var(--primary-color); margin-bottom: 4px; }
-    .item-title { font-size: 16px; font-weight: 600; margin-bottom: 2px; }
-    .item-time { font-size: 14px; color: var(--text-sub); }
+    .item:hover { border-color: var(--primary-color); background: #fafafa; }
+    .item input[type="checkbox"] { width: 22px; height: 22px; accent-color: var(--primary-color); margin-top: 4px; flex-shrink: 0; }
+    
+    /* 課堂文字顯示樣式 */
+    .item-content { flex: 1; line-height: 1.6; }
+    .course-info-line { font-size: 16px; color: var(--text-main); font-weight: 500; }
+    .course-name-line { font-size: 16px; color: var(--text-main); font-weight: 700; margin-top: 2px; }
 
     button#submit { 
       width: 100%; font-size: 18px; font-weight: 600; padding: 18px; border-radius: 14px; 
@@ -105,7 +107,7 @@
   </div>
 </div>
 
-<div class="header"><h1>Sherry Aerial指導者請假系統</h1><p>Leave Request</p></div>
+<div class="header"><h1>教師請假系統</h1><p>Leave Request</p></div>
 
 <div class="wrap">
   <div class="card"><label>1. 您的姓名</label><select id="instructor"><option value="">讀取中...</option></select></div>
@@ -119,10 +121,8 @@ const APP_URL = "https://script.google.com/macros/s/AKfycbyJADHe_DZdNIbfv_KPewAc
 let rawData = [];
 let selectedDates = new Set();
 
-// 核心修正：相容各裝置的星期計算
 function getDayName(dateStr) {
   const days = ['週日', '週一', '週二', '週三', '週四', '週五', '週六'];
-  // 將 2026/02/05 轉為 2026-02-05 提高相容性
   const safeStr = dateStr.replace(/\//g, '-');
   const d = new Date(safeStr);
   return days[d.getDay()] || '';
@@ -165,16 +165,18 @@ function refreshCourseList() {
   if (selectedDates.size === 0) { document.getElementById('courseCard').style.display = 'none'; document.getElementById('submit').disabled = true; return; }
   document.getElementById('courseCard').style.display = 'block';
   const classes = rawData.filter(item => item['指導者'] === document.getElementById('instructor').value && selectedDates.has(item['日期']));
+  
   classes.forEach(c => {
     const div = document.createElement('div');
     div.className = 'item';
     div.onclick = () => { const chk = div.querySelector('input'); chk.checked = !chk.checked; updateBtn(); };
+    
+    // 關鍵修改：符合您要求的兩行顯示格式
     div.innerHTML = `
       <input type="checkbox" data-course="${c['課程']}" data-date="${c['日期']}" data-time="${c['時間']}" onclick="event.stopPropagation(); updateBtn();">
-      <div style="flex:1;">
-        <div class="item-tag">${c['日期']} (${getDayName(c['日期'])})</div>
-        <div class="item-title">${c['課程']}</div>
-        <div class="item-time">🕒 ${c['時間']}</div>
+      <div class="item-content">
+        <div class="course-info-line">${c['日期']} (${getDayName(c['日期'])}) &nbsp; ${c['時間']}</div>
+        <div class="course-name-line">${c['課程']}</div>
       </div>`;
     listEl.appendChild(div);
   });
