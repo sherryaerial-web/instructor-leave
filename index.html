@@ -60,7 +60,7 @@ const loading = document.getElementById('loading');
 // 1. 初始化：從雲端抓取課表
 window.onload = function() {
   loading.style.display = 'flex';
-  fetch(`${WEB_APP_URL}?action=getCourse`)
+  fetch(`${APP_URL}?action=getCourse`)
     .then(res => res.json())
     .then(data => {
       rawData = data;
@@ -79,18 +79,24 @@ function refreshList() {
   listEl.innerHTML = '';
   submitBtn.disabled = true;
   const selIns = instructorSel.value;
-  const selDate = dateInput.value;
+  const selDate = dateInput.value; // HTML5 date input 格式永遠是 YYYY-MM-DD
   if (!selIns || !selDate) return;
 
+  // 修正處：將日期格式化為 YYYY/MM/DD (強迫補零)
   const d = selDate.split('-');
-  const formattedDate = `${d[0]}/${parseInt(d[1])}/${parseInt(d[2])}`;
+  const formattedDate = `${d[0]}/${d[1]}/${d[2]}`;
 
-  const classes = rawData.filter(item => 
-    item['指導者'] === selIns && item['日期'] === formattedDate
-  );
+  console.log("正在比對日期:", formattedDate); // 偵錯用
+
+  const classes = rawData.filter(item => {
+    // 這裡我們把比較雙方都 trim() 一下，避免空白字元搗亂
+    const itemDate = (item['日期'] || "").trim();
+    const itemIns = (item['指導者'] || "").trim();
+    return itemIns === selIns && itemDate === formattedDate;
+  });
 
   if (classes.length === 0) {
-    listEl.innerHTML = '<div style="color:#999; text-align:center;">此日期無您的課程</div>';
+    listEl.innerHTML = '<div style="color:#999; text-align:center;">此日期無您的課程<br><small>(試算表日期需為: ' + formattedDate + ')</small></div>';
     return;
   }
 
@@ -135,7 +141,7 @@ submitBtn.onclick = () => {
   fetch(`${APP_URL}?${params.toString()}`, { mode: "no-cors" })
     .then(() => {
       statusEl.style.color = "green";
-      statusEl.textContent = '✅ 請假成功！系統已自動去重與排序。';
+      statusEl.textContent = '✅ 請假成功！系統已自動去重。';
       setTimeout(() => { location.reload(); }, 2500);
     })
     .catch(() => {
