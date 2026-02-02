@@ -8,7 +8,7 @@
     * { box-sizing: border-box; }
     body { font-family: -apple-system, "Noto Sans TC", Arial, sans-serif; margin: 0; background: #f4f7f9; color: #333; }
     .wrap { max-width: 600px; margin: 0 auto; padding: 20px; padding-bottom: 60px; }
-    .card { background: #fff; border-radius: 16px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 16px; }
+    .card { background: #fff; border-radius: 16px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 16px; position: relative; }
     label { display: block; font-weight: bold; margin-bottom: 12px; font-size: 16px; color: #444; }
     select { width: 100%; font-size: 16px; padding: 12px; border-radius: 8px; border: 1px solid #ddd; background: #fff; outline: none; }
     
@@ -20,35 +20,58 @@
     /* 課程清單 */
     .list { display: grid; gap: 10px; margin-top: 10px; }
     .item { display: flex; gap: 12px; border: 1px solid #eee; padding: 15px; border-radius: 12px; align-items: center; cursor: pointer; background: #fff; }
-    .item:hover { border-color: #007aff; background: #f9fcff; }
     .item input { width: 22px; height: 22px; cursor: pointer; }
     
-    /* 送出按鈕 */
     button#submit { width: 100%; font-size: 18px; font-weight: bold; padding: 18px; border-radius: 12px; border: 0; background: #007aff; color: #fff; cursor: pointer; transition: 0.3s; margin-top: 10px; }
     button#submit:disabled { background: #ccc; cursor: not-allowed; }
 
-    /* 彈跳視窗 Modal 樣式 */
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px; }
-    .modal { background: #fff; padding: 30px; border-radius: 20px; max-width: 400px; width: 100%; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.2); animation: scaleUp 0.3s ease-out; }
-    @keyframes scaleUp { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-    .modal-icon { font-size: 50px; color: #28a745; margin-bottom: 15px; }
-    .modal-title { font-size: 20px; font-weight: bold; margin-bottom: 10px; }
-    .modal-text { color: #666; margin-bottom: 25px; }
-    .modal-btn { background: #007aff; color: #fff; border: 0; padding: 12px 40px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px; }
+    /* === 強化版彈跳視窗 === */
+    .modal-overlay { 
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+      background: rgba(0,0,0,0.7); /* 背景變暗 */
+      display: none; /* 預設隱藏 */
+      justify-content: center; align-items: center; 
+      z-index: 9999; /* 絕對置頂 */
+      padding: 20px;
+    }
+    .modal { 
+      background: #fff; padding: 40px 30px; border-radius: 24px; 
+      max-width: 350px; width: 100%; text-align: center; 
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3); 
+      animation: bounceIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+    }
+    @keyframes bounceIn {
+      from { transform: scale(0.5); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .modal-icon { font-size: 60px; margin-bottom: 20px; display: block; }
+    .modal-title { font-size: 22px; font-weight: bold; margin-bottom: 10px; color: #1d1d1f; }
+    .modal-text { color: #666; margin-bottom: 30px; line-height: 1.5; }
+    .modal-btn { 
+      background: #007aff; color: #fff; border: 0; width: 100%;
+      padding: 14px; border-radius: 12px; font-weight: bold; 
+      cursor: pointer; font-size: 16px; transition: 0.2s;
+    }
+    .modal-btn:hover { background: #0063cc; }
 
-    .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); display: flex; justify-content: center; align-items: center; z-index: 100; }
+    .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 8888; }
+    .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #007aff; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 10px; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
 
-<div id="loading" class="loading-overlay">⌛ 正在同步雲端課表...</div>
+<div id="loading" class="loading-overlay">
+  <div class="spinner"></div>
+  <div>正在同步雲端課表...</div>
+</div>
 
 <div id="modalOverlay" class="modal-overlay">
   <div class="modal">
-    <div class="modal-icon">✅</div>
-    <div class="modal-title">提交成功</div>
-    <div id="modalMsg" class="modal-text">您的請假申請已成功同步至雲端。</div>
-    <button class="modal-btn" onclick="location.reload()">確定</button>
+    <span class="modal-icon">🎉</span>
+    <div class="modal-title">請假申請成功</div>
+    <div class="modal-text">資料已成功送出！<br>點擊下方按鈕返回。</div>
+    <button class="modal-btn" onclick="location.reload()">太棒了，確定</button>
   </div>
 </div>
 
@@ -81,7 +104,6 @@ const submitBtn = document.getElementById('submit');
 const loading = document.getElementById('loading');
 const modalOverlay = document.getElementById('modalOverlay');
 
-// 1. 初始化抓取資料
 window.onload = function() {
   fetch(`${APP_URL}?action=getCourse`, { redirect: 'follow' })
     .then(res => res.json())
@@ -93,7 +115,7 @@ window.onload = function() {
       loading.style.display = 'none';
     })
     .catch(err => {
-      loading.innerHTML = '<div style="color:red; text-align:center;">❌ 讀取失敗，請重新整理</div>';
+      loading.innerHTML = '<div style="color:red; text-align:center;">❌ 讀取失敗，請確認 API 設定</div>';
     });
 };
 
@@ -104,35 +126,22 @@ instructorSel.onchange = function() {
   submitBtn.disabled = true;
   const selIns = instructorSel.value;
   if (!selIns) { dateGrid.innerHTML = ''; return; }
-
   const availableDates = [...new Set(rawData.filter(d => d['指導者'] === selIns).map(d => d['日期']))].sort();
-  dateGrid.innerHTML = availableDates.map(date => 
-    `<div class="date-item" onclick="toggleDate(this, '${date}')">${date}</div>`
-  ).join('');
+  dateGrid.innerHTML = availableDates.map(date => `<div class="date-item" onclick="toggleDate(this, '${date}')">${date}</div>`).join('');
 };
 
 function toggleDate(el, date) {
-  if (selectedDates.has(date)) {
-    selectedDates.delete(date);
-    el.classList.remove('active');
-  } else {
-    selectedDates.add(date);
-    el.classList.add('active');
-  }
+  selectedDates.has(date) ? selectedDates.delete(date) : selectedDates.add(date);
+  el.classList.toggle('active');
   refreshCourseList();
 }
 
 function refreshCourseList() {
   listEl.innerHTML = '';
-  if (selectedDates.size === 0) {
-    courseCard.style.display = 'none';
-    submitBtn.disabled = true;
-    return;
-  }
+  if (selectedDates.size === 0) { courseCard.style.display = 'none'; submitBtn.disabled = true; return; }
   courseCard.style.display = 'block';
   const selIns = instructorSel.value;
   const classes = rawData.filter(item => item['指導者'] === selIns && selectedDates.has(item['日期']));
-  
   classes.forEach(c => {
     const div = document.createElement('div');
     div.className = 'item';
@@ -156,7 +165,7 @@ function updateBtn() {
 
 submitBtn.onclick = () => {
   submitBtn.disabled = true;
-  submitBtn.textContent = '🚀 處理中...';
+  submitBtn.textContent = '🚀 正在同步至雲端...';
   
   const selectedItems = [...listEl.querySelectorAll('input:checked')].map(cb => ({
     course_name: cb.dataset.course,
@@ -169,15 +178,16 @@ submitBtn.onclick = () => {
     items: JSON.stringify(selectedItems)
   });
 
+  // 執行 fetch
   fetch(`${APP_URL}?${params.toString()}`, { mode: "no-cors" })
     .then(() => {
-      // 顯示成功彈跳視窗
+      // 關鍵修正：確保顯示彈跳視窗並設為 flex
       modalOverlay.style.display = 'flex';
+      submitBtn.textContent = '確認送出請假申請';
     })
     .catch(() => {
-      alert("送出失敗，請檢查網路連線。");
+      alert("網路異常，請重試");
       submitBtn.disabled = false;
-      submitBtn.textContent = '確認送出請假申請';
     });
 };
 </script>
